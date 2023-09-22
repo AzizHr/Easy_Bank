@@ -29,7 +29,22 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
     @Override
     public Optional<Employee> save(Employee employee) {
 
-        return Optional.empty();
+        String sql = "INSERT INTO employee (code, first_name, last_name, birth_date, phone_number, email, recruited_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, employee.getCode());
+            preparedStatement.setString(2, employee.getFirstName());
+            preparedStatement.setString(3, employee.getLastName());
+            preparedStatement.setObject(4, employee.getBirthDate());
+            preparedStatement.setString(5, employee.getPhoneNumber());
+            preparedStatement.setString(6, employee.getEmail());
+            preparedStatement.setObject(7, employee.getRecruitedAt());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error when trying to insert");
+        }
+        return Optional.of(employee);
     }
 
     /**
