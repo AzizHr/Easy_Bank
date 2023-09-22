@@ -25,12 +25,12 @@ public class ClientDAOImp implements IClientDAO<Client> {
     }
 
     /**
-     * @param client 
+     * @param client
      * @return
      */
     @Override
-    public Optional<Boolean> delete(Client client) {
-        return Optional.empty();
+    public boolean delete(Client client) {
+        return false;
     }
 
     /**
@@ -38,8 +38,8 @@ public class ClientDAOImp implements IClientDAO<Client> {
      * @return
      */
     @Override
-    public Optional<Boolean> update(Client client) {
-        return Optional.empty();
+    public boolean update(Client client) {
+        return false;
     }
 
     /**

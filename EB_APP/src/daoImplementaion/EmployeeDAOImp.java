@@ -48,12 +48,24 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
     }
 
     /**
-     * @param employee 
+     * @param employee
      * @return
      */
     @Override
-    public Optional<Boolean> delete(Employee employee) {
-        return Optional.empty();
+    public boolean delete(Employee employee) {
+        boolean deleted = false;
+        String sql = "DELETE FROM employee WHERE code = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, employee.getCode());
+            if(preparedStatement.executeUpdate() > 0) {
+                deleted = true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error when trying to insert");
+        }
+        return deleted;
     }
 
     /**
@@ -61,8 +73,8 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
      * @return
      */
     @Override
-    public Optional<Boolean> update(Employee employee) {
-        return Optional.empty();
+    public boolean update(Employee employee) {
+        return false;
     }
 
     /**

@@ -15,4 +15,11 @@ public class EmployeeService {
 
     }
 
+    public static boolean delete(Employee employee) {
+
+        return employeeDAOImp.delete(employee);
+
+    }
+
+
 }
