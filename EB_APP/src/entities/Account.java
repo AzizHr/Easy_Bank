@@ -12,6 +12,7 @@ public abstract class Account {
     private Locale createdAt;
     private accountStatus status;
     private Client client;
+    private Employee employee;
     private List<Operation> operations;
 
     public String getNumber() {
@@ -52,5 +53,21 @@ public abstract class Account {
 
     public void setOperations(List<Operation> operations) {
         this.operations = operations;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 }
