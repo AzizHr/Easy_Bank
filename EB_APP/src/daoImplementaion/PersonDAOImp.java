@@ -29,8 +29,8 @@ public class PersonDAOImp implements IPersonDAO<Person> {
      * @return
      */
     @Override
-    public boolean update(Person person) {
-        return false;
+    public int update(Person person) {
+        return 1;
     }
 
     /**
@@ -38,6 +38,15 @@ public class PersonDAOImp implements IPersonDAO<Person> {
      */
     @Override
     public Optional<List<Person>> findAll() {
+        return Optional.empty();
+    }
+
+    /**
+     * @param code 
+     * @return
+     */
+    @Override
+    public Optional<Person> findByCode(String code) {
         return Optional.empty();
     }
 }

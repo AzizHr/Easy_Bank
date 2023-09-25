@@ -4,9 +4,7 @@ import dao.IEmployeeDAO;
 import database.Database;
 import entities.Employee;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +17,28 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
      */
     @Override
     public Optional<Employee> findByCode(String code) {
-        return Optional.empty();
+        Employee employee = new Employee();
+        String sql = "SELECT * FROM employee WHERE code = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, code);
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next()) {
+                employee.setCode(rs.getString(1));
+                employee.setFirstName(rs.getString(2));
+                employee.setLastName(rs.getString(3));
+                employee.setBirthDate(rs.getDate(4).toLocalDate());
+                employee.setPhoneNumber(rs.getString(5));
+                employee.setEmail(rs.getString(6));
+                employee.setRecruitedAt(rs.getDate(7).toLocalDate());
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error when trying to select");
+        }
+        return Optional.of(employee);
     }
 
     /**
@@ -42,7 +61,7 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
             preparedStatement.setObject(7, employee.getRecruitedAt());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Error when trying to insert");
+            throw new RuntimeException(e);
         }
         return Optional.of(employee);
     }
@@ -59,9 +78,7 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, employee.getCode());
-            if(preparedStatement.executeUpdate() > 0) {
-                deleted = true;
-            }
+            deleted = preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             System.out.println("Error when trying to insert");
         }
@@ -73,8 +90,8 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
      * @return
      */
     @Override
-    public boolean update(Employee employee) {
-        return false;
+    public int update(Employee employee) {
+        return 0;
     }
 
     /**
@@ -82,6 +99,7 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
      */
     @Override
     public Optional<List<Employee>> findAll() {
-        return Optional.empty();
+
+        return null;
     }
 }

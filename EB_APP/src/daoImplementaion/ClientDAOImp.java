@@ -38,8 +38,8 @@ public class ClientDAOImp implements IClientDAO<Client> {
      * @return
      */
     @Override
-    public boolean update(Client client) {
-        return false;
+    public int update(Client client) {
+        return 0;
     }
 
     /**

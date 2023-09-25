@@ -3,6 +3,7 @@ package services;
 import daoImplementaion.EmployeeDAOImp;
 import entities.Employee;
 
+import java.util.List;
 import java.util.Optional;
 
 public class EmployeeService {
@@ -21,5 +22,10 @@ public class EmployeeService {
 
     }
 
+    public static Optional<Employee> findByCode(String code) {
+
+        return employeeDAOImp.findByCode(code);
+
+    }
 
 }
