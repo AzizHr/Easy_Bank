@@ -75,7 +75,17 @@ public class ClientDAOImp implements IClientDAO<Client> {
      */
     @Override
     public boolean delete(Client client) {
-        return false;
+        boolean deleted = false;
+        String sql = "DELETE FROM employee WHERE code = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, client.getCode());
+            deleted = preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Error when trying to delete");
+        }
+        return deleted;
     }
 
     /**

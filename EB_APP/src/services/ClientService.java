@@ -18,4 +18,8 @@ public class ClientService {
         return clientDAOImp.findByCode(code);
     }
 
+    public static boolean delete(Client client) {
+        return clientDAOImp.delete(client);
+    }
+
 }
