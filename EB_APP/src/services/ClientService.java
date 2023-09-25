@@ -14,4 +14,8 @@ public class ClientService {
 
     }
 
+    public static Optional<Client> findByCode(String code) {
+        return clientDAOImp.findByCode(code);
+    }
+
 }

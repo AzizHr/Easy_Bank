@@ -3,9 +3,11 @@ package daoImplementaion;
 import dao.IClientDAO;
 import database.Database;
 import entities.Client;
+import entities.Employee;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +22,27 @@ public class ClientDAOImp implements IClientDAO<Client> {
      */
     @Override
     public Optional<Client> findByCode(String code) {
-        return Optional.empty();
+        Client client = new Client();
+        String sql = "SELECT * FROM employee WHERE code = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, code);
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next()) {
+                client.setCode(rs.getString(1));
+                client.setFirstName(rs.getString(2));
+                client.setLastName(rs.getString(3));
+                client.setBirthDate(rs.getDate(4).toLocalDate());
+                client.setPhoneNumber(rs.getString(5));
+                client.setAdress(rs.getString(6));
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error when trying to select");
+        }
+        return Optional.of(client);
     }
 
     /**
