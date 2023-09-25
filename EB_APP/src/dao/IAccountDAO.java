@@ -13,6 +13,6 @@ public interface IAccountDAO<T> {
     Optional<Boolean> delete(T t);
     Optional<Boolean> updateStatus(accountStatus status);
     Optional<List<T>> findAll();
-    Optional<List<T>> findByClient(Person person);
+    Optional<List<T>> findByClient(String code);
 
 }

@@ -2,14 +2,16 @@ package entities;
 
 import enums.accountStatus;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 
 public abstract class Account {
 
     private String number;
-    private float balance;
-    private Locale createdAt;
+    private double balance;
+    private LocalDate createdAt;
     private accountStatus status;
     private Client client;
     private Employee employee;
@@ -23,19 +25,19 @@ public abstract class Account {
         this.number = number;
     }
 
-    public float getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(float balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 
-    public Locale getCreatedAt() {
+    public LocalDate getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Locale createdAt) {
+    public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
 

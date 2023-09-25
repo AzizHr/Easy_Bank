@@ -2,14 +2,14 @@ package daoImplementaion;
 
 import dao.ICurrentAccountDAO;
 import database.Database;
+import entities.Client;
 import entities.CurrentAccount;
+import entities.Employee;
 import entities.Person;
 import enums.accountStatus;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +28,7 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, currentAccount.getNumber());
-            preparedStatement.setFloat(2, currentAccount.getBalance());
+            preparedStatement.setDouble(2, currentAccount.getBalance());
             preparedStatement.setObject(3, currentAccount.getCreatedAt());
             preparedStatement.setObject(4, currentAccount.getStatus());
             preparedStatement.setObject(5, currentAccount.getOverdraft());
@@ -68,11 +68,31 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
     }
 
     /**
-     * @param person 
+     * @param code
      * @return
      */
     @Override
-    public Optional<List<CurrentAccount>> findByClient(Person person) {
-        return Optional.empty();
+    public Optional<List<CurrentAccount>> findByClient(String code) {
+        List<CurrentAccount> currentAccounts = new ArrayList<>();
+
+        String sql = "SELECT * FROM current_account WHERE client_code = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, code);
+            ResultSet rs = preparedStatement.executeQuery();
+            while(rs.next()) {
+                CurrentAccount currentAccount = new CurrentAccount();
+                currentAccount.setNumber(rs.getString(1));
+                currentAccount.setBalance(rs.getDouble(2));
+                currentAccount.setCreatedAt(rs.getDate(3).toLocalDate());
+                currentAccount.setStatus((accountStatus) rs.getObject(4));
+                currentAccount.setOverdraft(rs.getDouble(5));
+                currentAccounts.add(currentAccount);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error when trying to select");
+        }
+        return Optional.of(currentAccounts);
     }
 }

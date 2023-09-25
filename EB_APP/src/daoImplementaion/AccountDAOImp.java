@@ -49,7 +49,7 @@ public class AccountDAOImp implements IAccountDAO<Account> {
      * @return
      */
     @Override
-    public Optional<List<Account>> findByClient(Person person) {
+    public Optional<List<Account>> findByClient(String code) {
         return Optional.empty();
     }
 }

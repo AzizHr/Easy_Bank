@@ -44,11 +44,11 @@ public class SavingAccountDAOImp implements ISavingAccountDAO<SavingAccount> {
     }
 
     /**
-     * @param person 
+     * @param code
      * @return
      */
     @Override
-    public Optional<List<SavingAccount>> findByClient(Person person) {
+    public Optional<List<SavingAccount>> findByClient(String code) {
         return Optional.empty();
     }
 }
