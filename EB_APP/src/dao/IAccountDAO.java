@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface IAccountDAO<T> {
 
     Optional<T> save(T t);
-    Optional<Boolean> delete(T t);
+    boolean delete(String number);
     Optional<Boolean> updateStatus(accountStatus status);
     Optional<List<T>> findAll();
     Optional<List<T>> findByClient(String code);

@@ -42,12 +42,22 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
     }
 
     /**
-     * @param currentAccount 
+     * @param number 
      * @return
      */
     @Override
-    public Optional<Boolean> delete(CurrentAccount currentAccount) {
-        return Optional.empty();
+    public boolean delete(String number) {
+        boolean deleted = false;
+        String sql = "DELETE FROM current_account WHERE number = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, number);
+            deleted = preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Error when trying to delete");
+        }
+        return deleted;
     }
 
     /**

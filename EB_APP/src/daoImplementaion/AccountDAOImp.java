@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class AccountDAOImp implements IAccountDAO<Account> {
+
     /**
      * @param account 
      * @return
@@ -19,12 +20,12 @@ public class AccountDAOImp implements IAccountDAO<Account> {
     }
 
     /**
-     * @param account 
+     * @param number 
      * @return
      */
     @Override
-    public Optional<Boolean> delete(Account account) {
-        return Optional.empty();
+    public boolean delete(String number) {
+        return false;
     }
 
     /**
@@ -45,7 +46,7 @@ public class AccountDAOImp implements IAccountDAO<Account> {
     }
 
     /**
-     * @param person 
+     * @param code 
      * @return
      */
     @Override

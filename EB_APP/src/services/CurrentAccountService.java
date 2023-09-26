@@ -17,4 +17,8 @@ public class CurrentAccountService {
         return currentAccountDAOImp.findByClient(code);
     }
 
+    public static boolean delete(String number) {
+        return currentAccountDAOImp.delete(number);
+    }
+
 }
