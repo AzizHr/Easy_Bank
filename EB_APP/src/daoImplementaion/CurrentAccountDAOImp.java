@@ -105,4 +105,46 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
         }
         return Optional.of(currentAccounts);
     }
+
+    /**
+     * @param balance 
+     * @param number
+     * @return
+     */
+    @Override
+    public boolean deposit(double balance, String number) {
+        boolean updated = false;
+        String sql = "UPDATE current_account SET balance = balance + ? WHERE number = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setDouble(1, balance);
+            preparedStatement.setString(2, number);
+            updated = preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Error when trying to update");
+        }
+        return updated;
+    }
+
+    /**
+     * @param balance 
+     * @param number
+     * @return
+     */
+    @Override
+    public boolean withdraw(double balance, String number) {
+        boolean updated = false;
+        String sql = "UPDATE current_account SET balance = balance - ? WHERE number = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setDouble(1, balance);
+            preparedStatement.setString(2, number);
+            updated = preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Error when trying to update");
+        }
+        return updated;
+    }
 }

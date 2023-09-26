@@ -53,4 +53,24 @@ public class AccountDAOImp implements IAccountDAO<Account> {
     public Optional<List<Account>> findByClient(String code) {
         return Optional.empty();
     }
+
+    /**
+     * @param balance 
+     * @param number
+     * @return
+     */
+    @Override
+    public boolean deposit(double balance, String number) {
+        return false;
+    }
+
+    /**
+     * @param balance 
+     * @param number
+     * @return
+     */
+    @Override
+    public boolean withdraw(double balance, String number) {
+        return false;
+    }
 }

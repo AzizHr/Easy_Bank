@@ -9,6 +9,7 @@ public class Operation {
     private Locale createdAt;
     private float price;
     private paymentType payment;
+    private Employee employee;
     private Account account;
 
     public String getNumber() {
@@ -41,5 +42,21 @@ public class Operation {
 
     public void setPayment(paymentType payment) {
         this.payment = payment;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }
