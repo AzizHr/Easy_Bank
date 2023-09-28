@@ -28,9 +28,17 @@ public class EmployeeService {
 
     }
 
+
     public static boolean update(Employee employee) {
-        //
         return employeeDAOImp.update(employee);
+    }
+  
+    public static Optional<List<Employee>> findAll() {
+        return employeeDAOImp.findAll();
+    }
+
+    public static Optional<Employee> findByPhoneNumber(String phoneNumber) {
+        return employeeDAOImp.findByPhoneNumber(phoneNumber);
     }
 
 }
