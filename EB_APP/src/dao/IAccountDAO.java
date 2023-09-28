@@ -11,6 +11,7 @@ public interface IAccountDAO<T> {
 
     Optional<T> save(T t);
     boolean delete(String number);
+    boolean update(T t);
     Optional<Boolean> updateStatus(accountStatus status);
     Optional<List<T>> findAll();
     Optional<List<T>> findByClient(String code);

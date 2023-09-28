@@ -21,4 +21,8 @@ public class CurrentAccountService {
         return currentAccountDAOImp.delete(number);
     }
 
+    public static boolean update(CurrentAccount currentAccount) {
+        return currentAccountDAOImp.update(currentAccount);
+    }
+
 }

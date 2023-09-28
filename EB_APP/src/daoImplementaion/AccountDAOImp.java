@@ -29,6 +29,15 @@ public class AccountDAOImp implements IAccountDAO<Account> {
     }
 
     /**
+     * @param account 
+     * @return
+     */
+    @Override
+    public boolean update(Account account) {
+        return false;
+    }
+
+    /**
      * @param status 
      * @return
      */

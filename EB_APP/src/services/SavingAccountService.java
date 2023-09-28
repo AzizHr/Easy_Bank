@@ -22,4 +22,8 @@ public class SavingAccountService {
         return savingAccountDAOImp.delete(number);
     }
 
+    public static boolean update(SavingAccount savingAccount) {
+        return savingAccountDAOImp.update(savingAccount);
+    }
+
 }

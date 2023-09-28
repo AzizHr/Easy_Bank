@@ -61,6 +61,28 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
     }
 
     /**
+     * @param currentAccount 
+     * @return
+     */
+    @Override
+    public boolean update(CurrentAccount currentAccount) {
+        boolean updated = false;
+        String sql = "UPDATE current_account SET balance = ?, status = ? overdraft = ? WHERE number = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setDouble(1, currentAccount.getBalance());
+            preparedStatement.setObject(2, currentAccount.getStatus());
+            preparedStatement.setObject(3, currentAccount.getOverdraft());
+            preparedStatement.setString(4, currentAccount.getNumber());
+            updated = preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return updated;
+    }
+
+    /**
      * @param status 
      * @return
      */
