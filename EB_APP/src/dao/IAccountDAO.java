@@ -14,6 +14,7 @@ public interface IAccountDAO<T> {
     Optional<Boolean> updateStatus(accountStatus status);
     Optional<List<T>> findAll();
     Optional<List<T>> findByClient(String code);
+    Optional<T> findByNumber(String number);
     boolean deposit(double balance, String number);
     boolean withdraw(double balance, String number);
 }

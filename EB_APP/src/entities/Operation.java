@@ -1,13 +1,16 @@
 package entities;
 
 import enums.paymentType;
+
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Locale;
 
 public class Operation {
 
     private String number;
-    private Locale createdAt;
-    private float price;
+    private LocalDate createdAt;
+    private double price;
     private paymentType payment;
     private Employee employee;
     private Account account;
@@ -20,19 +23,19 @@ public class Operation {
         this.number = number;
     }
 
-    public Locale getCreatedAt() {
+    public LocalDate getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Locale createdAt) {
+    public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

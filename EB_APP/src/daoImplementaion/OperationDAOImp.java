@@ -2,16 +2,19 @@ package daoImplementaion;
 
 import dao.IOperationDAO;
 import database.Database;
+import entities.CurrentAccount;
 import entities.Operation;
+import enums.paymentType;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Optional;
 
 public class OperationDAOImp implements IOperationDAO<Operation> {
 
     private static final Connection connection = Database.getInstance().getConnection();
+    private static final EmployeeDAOImp employeeDAOImp = new EmployeeDAOImp();
+    private static final CurrentAccountDAOImp currentAccountDAOImp = new CurrentAccountDAOImp();
+    private static final SavingAccountDAOImp savingAccountDAOImp = new SavingAccountDAOImp();
 
     /**
      * @param operation 
@@ -52,6 +55,27 @@ public class OperationDAOImp implements IOperationDAO<Operation> {
      */
     @Override
     public Optional<Operation> findByNumber(String number) {
-        return Optional.empty();
+        Operation operation = new Operation();
+        String sql = "SELECT * FROM operation WHERE number = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, number);
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next()) {
+                operation.setNumber(rs.getString(1));
+                operation.setCreatedAt(rs.getDate(2).toLocalDate());
+                operation.setPrice(rs.getDouble(3));
+                operation.setPayment((paymentType) rs.getObject(4) );
+                operation.setEmployee(employeeDAOImp.findByCode(rs.getString(5)).get());
+                operation.setAccount(currentAccountDAOImp.findByNumber(rs.getString(6)).get());
+                operation.setAccount(savingAccountDAOImp.findByNumber(rs.getString(6)).get());
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error when trying to select");
+        }
+        return Optional.of(operation);
     }
 }

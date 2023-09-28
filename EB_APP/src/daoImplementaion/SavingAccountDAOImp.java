@@ -110,6 +110,15 @@ public class SavingAccountDAOImp implements ISavingAccountDAO<SavingAccount> {
     }
 
     /**
+     * @param number 
+     * @return
+     */
+    @Override
+    public Optional<SavingAccount> findByNumber(String number) {
+        return Optional.empty();
+    }
+
+    /**
      * @param balance 
      * @param number
      * @return

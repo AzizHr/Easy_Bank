@@ -107,6 +107,15 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
     }
 
     /**
+     * @param number 
+     * @return
+     */
+    @Override
+    public Optional<CurrentAccount> findByNumber(String number) {
+        return Optional.empty();
+    }
+
+    /**
      * @param balance 
      * @param number
      * @return
