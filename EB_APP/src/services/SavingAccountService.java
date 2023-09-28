@@ -27,4 +27,9 @@ public class SavingAccountService {
         return savingAccountDAOImp.updateStatus(status, number);
     }
 
+    public static Optional<List<SavingAccount>> findAll() {
+        return savingAccountDAOImp.findAll();
+    }
+
+
 }

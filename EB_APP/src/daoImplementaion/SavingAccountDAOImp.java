@@ -18,6 +18,8 @@ import java.util.Optional;
 public class SavingAccountDAOImp implements ISavingAccountDAO<SavingAccount> {
 
     private static final Connection connection = Database.getInstance().getConnection();
+    private static final ClientDAOImp clientDAOImp = new ClientDAOImp();
+    private static final EmployeeDAOImp employeeDAOImp = new EmployeeDAOImp();
 
     /**
      * @param savingAccount 
@@ -90,7 +92,29 @@ public class SavingAccountDAOImp implements ISavingAccountDAO<SavingAccount> {
      */
     @Override
     public Optional<List<SavingAccount>> findAll() {
-        return Optional.empty();
+        List<SavingAccount> savingAccounts = new ArrayList<>();
+
+        String sql = "SELECT * FROM saving_account";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet rs = preparedStatement.executeQuery();
+            while(rs.next()) {
+                SavingAccount savingAccount = new SavingAccount();
+                savingAccount.setNumber(rs.getString(1));
+                savingAccount.setBalance(rs.getDouble(2));
+                savingAccount.setCreatedAt(rs.getDate(3).toLocalDate());
+                savingAccount.setStatus((accountStatus) rs.getObject(4));
+                savingAccount.setInterest(rs.getDouble(5));
+                savingAccount.setClient(clientDAOImp.findByCode(rs.getString(6)).get());
+                savingAccount.setEmployee(employeeDAOImp.findByCode(rs.getString(7)).get());
+                savingAccounts.add(savingAccount);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Optional.of(savingAccounts);
     }
 
     /**
