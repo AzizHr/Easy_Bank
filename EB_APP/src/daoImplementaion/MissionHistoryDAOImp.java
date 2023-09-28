@@ -52,6 +52,18 @@ public class MissionHistoryDAOImp implements IMissionHistoryDAO<MissionHistory> 
      */
     @Override
     public boolean delete(String employeeCode, String missionCode, LocalDate startedAt) {
-        return false;
+        boolean deleted = false;
+        String sql = "DELETE FROM employee WHERE employee_code = ? AND mission_code = ? AND started_at = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, employeeCode);
+            preparedStatement.setString(1, missionCode);
+            preparedStatement.setObject(1, startedAt);
+            deleted = preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Error when trying to delete");
+        }
+        return deleted;
     }
 }
