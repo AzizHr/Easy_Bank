@@ -24,7 +24,7 @@ public class ClientDAOImp implements IClientDAO<Client> {
     @Override
     public Optional<Client> findByCode(String code) {
         Client client = new Client();
-        String sql = "SELECT * FROM employee WHERE code = ?";
+        String sql = "SELECT * FROM client WHERE code = ?";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -125,5 +125,34 @@ public class ClientDAOImp implements IClientDAO<Client> {
         }
 
         return Optional.of(clients);
+    }
+
+    /**
+     * @param adress 
+     * @return
+     */
+    @Override
+    public Optional<Client> findByAdress(String adress) {
+        Client client = new Client();
+        String sql = "SELECT * FROM client WHERE code = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, adress);
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next()) {
+                client.setCode(rs.getString(1));
+                client.setFirstName(rs.getString(2));
+                client.setLastName(rs.getString(3));
+                client.setBirthDate(rs.getDate(4).toLocalDate());
+                client.setPhoneNumber(rs.getString(5));
+                client.setAdress(rs.getString(6));
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error when trying to select");
+        }
+        return Optional.of(client);
     }
 }

@@ -27,4 +27,8 @@ public class ClientService {
         return clientDAOImp.findAll();
     }
 
+    public static Optional<Client> findByAdress(String adress) {
+        return clientDAOImp.findByAdress(adress);
+    }
+
 }
