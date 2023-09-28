@@ -67,8 +67,22 @@ public class SavingAccountDAOImp implements ISavingAccountDAO<SavingAccount> {
      * @return
      */
     @Override
-    public Optional<Boolean> updateStatus(accountStatus status) {
-        return Optional.empty();
+    public boolean updateStatus(accountStatus status, String number) {
+        boolean updated = false;
+
+        String sql = "UPDATE saving_account SET account_status = ? WHERE number = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setObject(1, status);
+            preparedStatement.setString(2, number);
+            updated = preparedStatement.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return updated;
     }
 
     /**

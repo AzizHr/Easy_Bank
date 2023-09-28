@@ -2,6 +2,7 @@ package services;
 
 import daoImplementaion.CurrentAccountDAOImp;
 import entities.CurrentAccount;
+import enums.accountStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,10 @@ public class CurrentAccountService {
 
     public static boolean delete(String number) {
         return currentAccountDAOImp.delete(number);
+    }
+
+    public static boolean updateStatus(accountStatus status, String number) {
+        return currentAccountDAOImp.updateStatus(status, number);
     }
 
 }

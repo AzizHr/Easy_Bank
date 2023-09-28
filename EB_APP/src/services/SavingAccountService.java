@@ -3,6 +3,7 @@ package services;
 import daoImplementaion.SavingAccountDAOImp;
 import entities.CurrentAccount;
 import entities.SavingAccount;
+import enums.accountStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +21,10 @@ public class SavingAccountService {
     }
     public static boolean delete(String number) {
         return savingAccountDAOImp.delete(number);
+    }
+
+    public static boolean updateStatus(accountStatus status, String number) {
+        return savingAccountDAOImp.updateStatus(status, number);
     }
 
 }
