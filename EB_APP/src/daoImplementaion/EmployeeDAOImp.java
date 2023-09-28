@@ -90,8 +90,26 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
      * @return
      */
     @Override
-    public int update(Employee employee) {
-        return 0;
+    public boolean update(Employee employee) {
+
+        boolean updated = false;
+
+        String sql = "UPDATE employee SET first_name = ?, last_name = ?, birth_date = ?, phone_number = ?, email = ?, recruited_at = ? WHERE code = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, employee.getFirstName());
+            preparedStatement.setString(2, employee.getLastName());
+            preparedStatement.setObject(3, employee.getBirthDate());
+            preparedStatement.setString(4, employee.getPhoneNumber());
+            preparedStatement.setString(5, employee.getEmail());
+            preparedStatement.setObject(6, employee.getRecruitedAt());
+            preparedStatement.setString(7, employee.getCode());
+            updated = preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return updated;
     }
 
     /**

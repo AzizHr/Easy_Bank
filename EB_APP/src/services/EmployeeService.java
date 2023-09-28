@@ -28,4 +28,8 @@ public class EmployeeService {
 
     }
 
+    public static boolean update(Employee employee) {
+        return employeeDAOImp.update(employee);
+    }
+
 }
