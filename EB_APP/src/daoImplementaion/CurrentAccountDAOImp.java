@@ -138,6 +138,34 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
     }
 
     /**
+     * @param number 
+     * @return
+     */
+    @Override
+    public Optional<CurrentAccount> findByOperationNumber(String number) {
+
+        CurrentAccount currentAccount = new CurrentAccount();
+
+        String sql = "SELECT * FROM current_account WHERE number IN (SELECT current_account_number FROM operation WHERE number = ?)";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, number);
+            ResultSet rs = preparedStatement.executeQuery();
+            while(rs.next()) {
+                currentAccount.setNumber(rs.getString(1));
+                currentAccount.setBalance(rs.getDouble(2));
+                currentAccount.setCreatedAt(rs.getDate(3).toLocalDate());
+                currentAccount.setStatus((accountStatus) rs.getObject(4));
+                currentAccount.setOverdraft(rs.getDouble(5));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error when trying to select");
+        }
+        return Optional.of(currentAccount);
+    }
+
+    /**
      * @param balance 
      * @param number
      * @return

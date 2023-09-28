@@ -25,4 +25,8 @@ public class CurrentAccountService {
         return currentAccountDAOImp.update(currentAccount);
     }
 
+    public static Optional<CurrentAccount> findByOperationNumber(String number) {
+        return currentAccountDAOImp.findByOperationNumber(number);
+    }
+
 }

@@ -73,6 +73,15 @@ public class AccountDAOImp implements IAccountDAO<Account> {
     }
 
     /**
+     * @param number 
+     * @return
+     */
+    @Override
+    public Optional<Account> findByOperationNumber(String number) {
+        return Optional.empty();
+    }
+
+    /**
      * @param balance 
      * @param number
      * @return

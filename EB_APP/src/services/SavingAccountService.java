@@ -26,4 +26,7 @@ public class SavingAccountService {
         return savingAccountDAOImp.update(savingAccount);
     }
 
+    public static Optional<SavingAccount> findByOperationNumber(String number) {
+        return savingAccountDAOImp.findByOperationNumber(number);
+    }
 }
