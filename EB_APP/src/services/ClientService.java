@@ -3,6 +3,7 @@ package services;
 import daoImplementaion.ClientDAOImp;
 import entities.Client;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ClientService {
@@ -20,6 +21,10 @@ public class ClientService {
 
     public static boolean delete(Client client) {
         return clientDAOImp.delete(client);
+    }
+
+    public static Optional<List<Client>> findAll() {
+        return clientDAOImp.findAll();
     }
 
 }

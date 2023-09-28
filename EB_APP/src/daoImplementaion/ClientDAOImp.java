@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -102,6 +103,27 @@ public class ClientDAOImp implements IClientDAO<Client> {
      */
     @Override
     public Optional<List<Client>> findAll() {
-        return Optional.empty();
+        List<Client> clients = new ArrayList<>();
+
+        String sql = "SELECT * FROM client";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet rs = preparedStatement.executeQuery();
+            while(rs.next()) {
+                Client client = new Client();
+                client.setCode(rs.getString(1));
+                client.setFirstName(rs.getString(2));
+                client.setLastName(rs.getString(3));
+                client.setBirthDate(rs.getDate(4).toLocalDate());
+                client.setPhoneNumber(rs.getString(5));
+                client.setAdress(rs.getString(6));
+                clients.add(client);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Optional.of(clients);
     }
 }

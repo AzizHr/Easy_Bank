@@ -116,7 +116,7 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
                 employee.setBirthDate(rs.getDate(4).toLocalDate());
                 employee.setPhoneNumber(rs.getString(5));
                 employee.setEmail(rs.getString(6));
-                employee.setRecruitedAt(rs.getDate(6).toLocalDate());
+                employee.setRecruitedAt(rs.getDate(7).toLocalDate());
                 employees.add(employee);
             }
         } catch (SQLException e) {
