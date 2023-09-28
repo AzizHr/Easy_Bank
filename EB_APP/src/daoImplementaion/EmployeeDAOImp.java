@@ -125,4 +125,34 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
 
         return Optional.of(employees);
     }
+
+    /**
+     * @param phoneNumber 
+     * @return
+     */
+    @Override
+    public Optional<Employee> findByPhoneNumber(String phoneNumber) {
+        Employee employee = new Employee();
+        String sql = "SELECT * FROM employee WHERE phone_number = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, phoneNumber);
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next()) {
+                employee.setCode(rs.getString(1));
+                employee.setFirstName(rs.getString(2));
+                employee.setLastName(rs.getString(3));
+                employee.setBirthDate(rs.getDate(4).toLocalDate());
+                employee.setPhoneNumber(rs.getString(5));
+                employee.setEmail(rs.getString(6));
+                employee.setRecruitedAt(rs.getDate(7).toLocalDate());
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error when trying to select");
+        }
+        return Optional.of(employee);
+    }
 }

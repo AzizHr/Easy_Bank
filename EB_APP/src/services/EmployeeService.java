@@ -29,8 +29,11 @@ public class EmployeeService {
     }
 
     public static Optional<List<Employee>> findAll() {
-        // get all
         return employeeDAOImp.findAll();
+    }
+
+    public static Optional<Employee> findByPhoneNumber(String phoneNumber) {
+        return employeeDAOImp.findByPhoneNumber(phoneNumber);
     }
 
 }
