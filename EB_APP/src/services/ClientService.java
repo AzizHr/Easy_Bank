@@ -22,4 +22,8 @@ public class ClientService {
         return clientDAOImp.delete(client);
     }
 
+    public static boolean update(Client client) {
+        return clientDAOImp.update(client);
+    }
+
 }
