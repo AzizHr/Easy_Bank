@@ -4,7 +4,6 @@ import dao.IMissionDAO;
 import database.Database;
 import entities.Employee;
 import entities.Mission;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,7 +22,37 @@ public class MissionDAOImp implements IMissionDAO<Mission> {
      */
     @Override
     public Optional<Mission> save(Mission mission) {
-        return Optional.empty();
+        String sql = "INSERT INTO mission (number, balance, created_at, status, overdraft, client_code, employee_code) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, mission.getCode());
+            preparedStatement.setString(2, mission.getName());
+            preparedStatement.setString(3, mission.getDescription());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return Optional.of(mission);
+    }
+
+    /**
+     * @param code 
+     * @return
+     */
+    @Override
+    public boolean delete(String code) {
+        boolean deleted = false;
+        String sql = "DELETE FROM mission WHERE code = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, code);
+            deleted = preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Error when trying to delete");
+        }
+        return deleted;
     }
 
     /**

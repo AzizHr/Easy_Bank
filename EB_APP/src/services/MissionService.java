@@ -3,6 +3,7 @@ package services;
 import daoImplementaion.MissionDAOImp;
 import entities.Mission;
 
+
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,10 @@ public class MissionService {
 
     public static Optional<List<Mission>> findAll() {
         return missionDAOImp.findAll();
+    }
+  
+    public static Optional<Mission> save(Mission mission) {
+        return missionDAOImp.save(mission);
     }
 
     public static boolean delete(String code) {

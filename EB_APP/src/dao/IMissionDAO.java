@@ -12,4 +12,6 @@ public interface IMissionDAO<T> {
 
     boolean delete(String code);
 
+    boolean delete(String code);
+
 }
