@@ -10,4 +10,6 @@ public interface IMissionDAO<T> {
     Optional<T> save(T t);
     Optional<List<Mission>> findAll();
 
+    boolean delete(String code);
+
 }
