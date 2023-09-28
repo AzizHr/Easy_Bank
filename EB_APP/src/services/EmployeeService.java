@@ -28,4 +28,8 @@ public class EmployeeService {
 
     }
 
+    public static Optional<List<Employee>> findAll() {
+        return employeeDAOImp.findAll();
+    }
+
 }

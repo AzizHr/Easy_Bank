@@ -5,6 +5,7 @@ import database.Database;
 import entities.Employee;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -100,6 +101,28 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
     @Override
     public Optional<List<Employee>> findAll() {
 
-        return null;
+        List<Employee> employees = new ArrayList<>();
+
+        String sql = "SELECT * FROM employee";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet rs = preparedStatement.executeQuery();
+            while(rs.next()) {
+                Employee employee = new Employee();
+                employee.setCode(rs.getString(1));
+                employee.setFirstName(rs.getString(2));
+                employee.setLastName(rs.getString(3));
+                employee.setBirthDate(rs.getDate(4).toLocalDate());
+                employee.setPhoneNumber(rs.getString(5));
+                employee.setEmail(rs.getString(6));
+                employee.setRecruitedAt(rs.getDate(6).toLocalDate());
+                employees.add(employee);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Optional.of(employees);
     }
 }
