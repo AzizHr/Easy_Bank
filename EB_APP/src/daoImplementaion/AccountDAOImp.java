@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class AccountDAOImp implements IAccountDAO<Account> {
+
     /**
      * @param account 
      * @return
@@ -19,12 +20,21 @@ public class AccountDAOImp implements IAccountDAO<Account> {
     }
 
     /**
+     * @param number 
+     * @return
+     */
+    @Override
+    public boolean delete(String number) {
+        return false;
+    }
+
+    /**
      * @param account 
      * @return
      */
     @Override
-    public Optional<Boolean> delete(Account account) {
-        return Optional.empty();
+    public boolean update(Account account) {
+        return false;
     }
 
     /**
@@ -32,8 +42,8 @@ public class AccountDAOImp implements IAccountDAO<Account> {
      * @return
      */
     @Override
-    public Optional<Boolean> updateStatus(accountStatus status) {
-        return Optional.empty();
+    public boolean updateStatus(accountStatus status, String number) {
+        return false;
     }
 
     /**
@@ -45,11 +55,49 @@ public class AccountDAOImp implements IAccountDAO<Account> {
     }
 
     /**
-     * @param person 
+     * @param code 
      * @return
      */
     @Override
-    public Optional<List<Account>> findByClient(Person person) {
+    public Optional<List<Account>> findByClient(String code) {
         return Optional.empty();
+    }
+
+    /**
+     * @param number 
+     * @return
+     */
+    @Override
+    public Optional<Account> findByNumber(String number) {
+        return Optional.empty();
+    }
+
+    /**
+     * @param number 
+     * @return
+     */
+    @Override
+    public Optional<Account> findByOperationNumber(String number) {
+        return Optional.empty();
+    }
+
+    /**
+     * @param balance 
+     * @param number
+     * @return
+     */
+    @Override
+    public boolean deposit(double balance, String number) {
+        return false;
+    }
+
+    /**
+     * @param balance 
+     * @param number
+     * @return
+     */
+    @Override
+    public boolean withdraw(double balance, String number) {
+        return false;
     }
 }

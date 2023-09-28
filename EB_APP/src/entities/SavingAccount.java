@@ -2,13 +2,13 @@ package entities;
 
 public class SavingAccount extends Account {
 
-    private float interest;
+    private double interest;
 
-    public float getInterest() {
+    public double getInterest() {
         return interest;
     }
 
-    public void setInterest(float interest) {
+    public void setInterest(double interest) {
         this.interest = interest;
     }
 }

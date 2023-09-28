@@ -16,12 +16,12 @@ public class PersonDAOImp implements IPersonDAO<Person> {
     }
 
     /**
-     * @param person 
+     * @param person
      * @return
      */
     @Override
-    public Optional<Boolean> delete(Person person) {
-        return Optional.empty();
+    public boolean delete(Person person) {
+        return false;
     }
 
     /**
@@ -29,8 +29,8 @@ public class PersonDAOImp implements IPersonDAO<Person> {
      * @return
      */
     @Override
-    public Optional<Boolean> update(Person person) {
-        return Optional.empty();
+    public boolean update(Person person) {
+        return false;
     }
 
     /**
@@ -38,6 +38,15 @@ public class PersonDAOImp implements IPersonDAO<Person> {
      */
     @Override
     public Optional<List<Person>> findAll() {
+        return Optional.empty();
+    }
+
+    /**
+     * @param code 
+     * @return
+     */
+    @Override
+    public Optional<Person> findByCode(String code) {
         return Optional.empty();
     }
 }

@@ -50,8 +50,10 @@ public class Employee extends Person {
 
     @Override
     public String toString() {
-        return  "Code : "+this.getCode()+" \n"+
-                "First Name : "+this.getFirstName()+" \n"+
-                "Last Name : "+this.getLastName()+" \n";
+        return  "\nEmployee Information => {"+
+                " Code : "+this.getCode()+", "+
+                " First Name : "+this.getFirstName()+", "+
+                " Last Name : "+this.getLastName()+
+                " }";
     }
 }

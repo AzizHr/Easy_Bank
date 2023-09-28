@@ -4,9 +4,8 @@ import dao.IEmployeeDAO;
 import database.Database;
 import entities.Employee;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +18,28 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
      */
     @Override
     public Optional<Employee> findByCode(String code) {
-        return Optional.empty();
+        Employee employee = new Employee();
+        String sql = "SELECT * FROM employee WHERE code = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, code);
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next()) {
+                employee.setCode(rs.getString(1));
+                employee.setFirstName(rs.getString(2));
+                employee.setLastName(rs.getString(3));
+                employee.setBirthDate(rs.getDate(4).toLocalDate());
+                employee.setPhoneNumber(rs.getString(5));
+                employee.setEmail(rs.getString(6));
+                employee.setRecruitedAt(rs.getDate(7).toLocalDate());
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error when trying to select");
+        }
+        return Optional.of(employee);
     }
 
     /**
@@ -29,7 +49,41 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
     @Override
     public Optional<Employee> save(Employee employee) {
 
-        return Optional.empty();
+        String sql = "INSERT INTO employee (code, first_name, last_name, birth_date, phone_number, email, recruited_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, employee.getCode());
+            preparedStatement.setString(2, employee.getFirstName());
+            preparedStatement.setString(3, employee.getLastName());
+            preparedStatement.setObject(4, employee.getBirthDate());
+            preparedStatement.setString(5, employee.getPhoneNumber());
+            preparedStatement.setString(6, employee.getEmail());
+            preparedStatement.setObject(7, employee.getRecruitedAt());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return Optional.of(employee);
+    }
+
+    /**
+     * @param employee
+     * @return
+     */
+    @Override
+    public boolean delete(Employee employee) {
+        boolean deleted = false;
+        String sql = "DELETE FROM employee WHERE code = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, employee.getCode());
+            deleted = preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Error when trying to insert");
+        }
+        return deleted;
     }
 
     /**
@@ -37,17 +91,26 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
      * @return
      */
     @Override
-    public Optional<Boolean> delete(Employee employee) {
-        return Optional.empty();
-    }
+    public boolean update(Employee employee) {
 
-    /**
-     * @param employee 
-     * @return
-     */
-    @Override
-    public Optional<Boolean> update(Employee employee) {
-        return Optional.empty();
+        boolean updated = false;
+
+        String sql = "UPDATE employee SET first_name = ?, last_name = ?, birth_date = ?, phone_number = ?, email = ?, recruited_at = ? WHERE code = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, employee.getFirstName());
+            preparedStatement.setString(2, employee.getLastName());
+            preparedStatement.setObject(3, employee.getBirthDate());
+            preparedStatement.setString(4, employee.getPhoneNumber());
+            preparedStatement.setString(5, employee.getEmail());
+            preparedStatement.setObject(6, employee.getRecruitedAt());
+            preparedStatement.setString(7, employee.getCode());
+            updated = preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return updated;
     }
 
     /**
@@ -55,6 +118,59 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
      */
     @Override
     public Optional<List<Employee>> findAll() {
-        return Optional.empty();
+
+        List<Employee> employees = new ArrayList<>();
+
+        String sql = "SELECT * FROM employee";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet rs = preparedStatement.executeQuery();
+            while(rs.next()) {
+                Employee employee = new Employee();
+                employee.setCode(rs.getString(1));
+                employee.setFirstName(rs.getString(2));
+                employee.setLastName(rs.getString(3));
+                employee.setBirthDate(rs.getDate(4).toLocalDate());
+                employee.setPhoneNumber(rs.getString(5));
+                employee.setEmail(rs.getString(6));
+                employee.setRecruitedAt(rs.getDate(7).toLocalDate());
+                employees.add(employee);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Optional.of(employees);
+    }
+
+    /**
+     * @param phoneNumber 
+     * @return
+     */
+    @Override
+    public Optional<Employee> findByPhoneNumber(String phoneNumber) {
+        Employee employee = new Employee();
+        String sql = "SELECT * FROM employee WHERE phone_number = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, phoneNumber);
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next()) {
+                employee.setCode(rs.getString(1));
+                employee.setFirstName(rs.getString(2));
+                employee.setLastName(rs.getString(3));
+                employee.setBirthDate(rs.getDate(4).toLocalDate());
+                employee.setPhoneNumber(rs.getString(5));
+                employee.setEmail(rs.getString(6));
+                employee.setRecruitedAt(rs.getDate(7).toLocalDate());
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error when trying to select");
+        }
+        return Optional.of(employee);
     }
 }
