@@ -8,4 +8,6 @@ public interface IMissionDAO<T> {
 
     Optional<T> save(T t);
 
+    boolean delete(String code);
+
 }

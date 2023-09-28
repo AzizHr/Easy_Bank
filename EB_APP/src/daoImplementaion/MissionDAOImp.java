@@ -33,4 +33,23 @@ public class MissionDAOImp implements IMissionDAO<Mission> {
         }
         return Optional.of(mission);
     }
+
+    /**
+     * @param code 
+     * @return
+     */
+    @Override
+    public boolean delete(String code) {
+        boolean deleted = false;
+        String sql = "DELETE FROM mission WHERE code = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, code);
+            deleted = preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Error when trying to delete");
+        }
+        return deleted;
+    }
 }

@@ -13,4 +13,8 @@ public class MissionService {
         return missionDAOImp.save(mission);
     }
 
+    public static boolean delete(String code) {
+        return missionDAOImp.delete(code);
+    }
+
 }
