@@ -13,4 +13,8 @@ public class OperationService {
         return operationDAOImp.findByNumber(number);
     }
 
+    public static boolean delete(String number) {
+        return operationDAOImp.delete(number);
+    }
+
 }
