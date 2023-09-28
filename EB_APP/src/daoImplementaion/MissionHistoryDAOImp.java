@@ -28,18 +28,6 @@ public class MissionHistoryDAOImp implements IMissionHistoryDAO<MissionHistory> 
      */
     @Override
     public Optional<MissionHistory> save(MissionHistory missionHistory) {
-        String sql = "INSERT INTO mission_history (employee_code, mission_code, started_at, ended_at) VALUES (?, ?, ?, ?)";
-
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, missionHistory.getEmployee().getCode());
-            preparedStatement.setString(2, missionHistory.getMission().getCode());
-            preparedStatement.setObject(3, missionHistory.getStartedAt());
-            preparedStatement.setObject(4, missionHistory.getEndedAt());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return Optional.of(missionHistory);
+        
     }
 }
