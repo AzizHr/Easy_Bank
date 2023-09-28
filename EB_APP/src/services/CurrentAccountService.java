@@ -23,6 +23,14 @@ public class CurrentAccountService {
         return currentAccountDAOImp.delete(number);
     }
 
+    public static boolean update(CurrentAccount currentAccount) {
+        return currentAccountDAOImp.update(currentAccount);
+    }
+
+    public static Optional<CurrentAccount> findByOperationNumber(String number) {
+        return currentAccountDAOImp.findByOperationNumber(number);
+    }
+  
     public static boolean updateStatus(accountStatus status, String number) {
         return currentAccountDAOImp.updateStatus(status, number);
     }

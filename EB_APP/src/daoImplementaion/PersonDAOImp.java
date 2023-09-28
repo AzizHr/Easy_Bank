@@ -29,8 +29,8 @@ public class PersonDAOImp implements IPersonDAO<Person> {
      * @return
      */
     @Override
-    public int update(Person person) {
-        return 1;
+    public boolean update(Person person) {
+        return false;
     }
 
     /**

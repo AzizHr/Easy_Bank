@@ -64,6 +64,28 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
     }
 
     /**
+     * @param currentAccount 
+     * @return
+     */
+    @Override
+    public boolean update(CurrentAccount currentAccount) {
+        boolean updated = false;
+        String sql = "UPDATE current_account SET balance = ?, status = ? overdraft = ? WHERE number = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setDouble(1, currentAccount.getBalance());
+            preparedStatement.setObject(2, currentAccount.getStatus());
+            preparedStatement.setObject(3, currentAccount.getOverdraft());
+            preparedStatement.setString(4, currentAccount.getNumber());
+            updated = preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return updated;
+    }
+
+    /**
      * @param status 
      * @return
      */
@@ -153,6 +175,34 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
     @Override
     public Optional<CurrentAccount> findByNumber(String number) {
         return Optional.empty();
+    }
+
+    /**
+     * @param number 
+     * @return
+     */
+    @Override
+    public Optional<CurrentAccount> findByOperationNumber(String number) {
+
+        CurrentAccount currentAccount = new CurrentAccount();
+
+        String sql = "SELECT * FROM current_account WHERE number IN (SELECT current_account_number FROM operation WHERE number = ?)";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, number);
+            ResultSet rs = preparedStatement.executeQuery();
+            while(rs.next()) {
+                currentAccount.setNumber(rs.getString(1));
+                currentAccount.setBalance(rs.getDouble(2));
+                currentAccount.setCreatedAt(rs.getDate(3).toLocalDate());
+                currentAccount.setStatus((accountStatus) rs.getObject(4));
+                currentAccount.setOverdraft(rs.getDouble(5));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error when trying to select");
+        }
+        return Optional.of(currentAccount);
     }
 
     /**

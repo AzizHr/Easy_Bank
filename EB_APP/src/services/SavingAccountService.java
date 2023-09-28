@@ -23,6 +23,14 @@ public class SavingAccountService {
         return savingAccountDAOImp.delete(number);
     }
 
+    public static boolean update(SavingAccount savingAccount) {
+        return savingAccountDAOImp.update(savingAccount);
+    }
+
+    public static Optional<SavingAccount> findByOperationNumber(String number) {
+        return savingAccountDAOImp.findByOperationNumber(number);
+    }
+  
     public static boolean updateStatus(accountStatus status, String number) {
         return savingAccountDAOImp.updateStatus(status, number);
     }
@@ -30,6 +38,4 @@ public class SavingAccountService {
     public static Optional<List<SavingAccount>> findAll() {
         return savingAccountDAOImp.findAll();
     }
-
-
 }

@@ -94,8 +94,24 @@ public class ClientDAOImp implements IClientDAO<Client> {
      * @return
      */
     @Override
-    public int update(Client client) {
-        return 0;
+    public boolean update(Client client) {
+        boolean updated = false;
+
+        String sql = "UPDATE client SET first_name = ?, last_name = ?, birth_date = ?, phone_number = ?, adress = ? WHERE code = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, client.getFirstName());
+            preparedStatement.setString(2, client.getLastName());
+            preparedStatement.setObject(3, client.getBirthDate());
+            preparedStatement.setString(4, client.getPhoneNumber());
+            preparedStatement.setString(5, client.getAdress());
+            preparedStatement.setString(6, client.getCode());
+            updated = preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return updated;
     }
 
     /**
