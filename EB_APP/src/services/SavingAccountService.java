@@ -84,7 +84,8 @@ public class SavingAccountService {
 
         Optional<SavingAccount> savingAccountOptional = savingAccountDAOImp.findByNumber(number);
 
-        return savingAccountOptional.orElse(null);
+        SavingAccount sa = savingAccountOptional.orElse(null);
+        return sa;
     }
 
     public static void findAll() {

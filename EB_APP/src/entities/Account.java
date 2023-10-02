@@ -17,6 +17,17 @@ public abstract class Account {
     private Employee employee;
     private List<Operation> operations;
 
+
+    public Account() {}
+    public Account(String number, double balance, LocalDate createdAt, accountStatus status, Client client, Employee employee) {
+        setNumber(number);
+        setBalance(balance);
+        setCreatedAt(createdAt);
+        setStatus(status);
+        setClient(client);
+        setEmployee(employee);
+    }
+
     public String getNumber() {
         return number;
     }

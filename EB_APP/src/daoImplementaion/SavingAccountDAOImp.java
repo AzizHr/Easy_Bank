@@ -7,10 +7,7 @@ import entities.Person;
 import entities.SavingAccount;
 import enums.accountStatus;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,14 +23,14 @@ public class SavingAccountDAOImp implements ISavingAccountDAO<SavingAccount> {
      */
     @Override
     public Optional<SavingAccount> save(SavingAccount savingAccount) {
-        String sql = "INSERT INTO saving_account (number, balance, created_at, status, interest, client_code, employee_code) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO saving_account (number, balance, created_at, account_status, interest_rate, client_code, employee_code) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, savingAccount.getNumber());
             preparedStatement.setDouble(2, savingAccount.getBalance());
             preparedStatement.setObject(3, savingAccount.getCreatedAt());
-            preparedStatement.setObject(4, savingAccount.getStatus());
+            preparedStatement.setObject(4, accountStatus.Active, Types.OTHER);
             preparedStatement.setObject(5, savingAccount.getInterest());
             preparedStatement.setString(6, savingAccount.getClient().getCode());
             preparedStatement.setString(7, savingAccount.getEmployee().getCode());
