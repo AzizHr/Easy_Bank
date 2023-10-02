@@ -2,13 +2,13 @@ package entities;
 
 public class CurrentAccount extends Account {
 
-    private float overdraft;
+    private double overdraft;
 
-    public float getOverdraft() {
+    public double getOverdraft() {
         return overdraft;
     }
 
-    public void setOverdraft(float overdraft) {
+    public void setOverdraft(double overdraft) {
         this.overdraft = overdraft;
     }
 }
