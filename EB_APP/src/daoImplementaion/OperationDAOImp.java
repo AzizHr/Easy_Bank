@@ -21,18 +21,17 @@ public class OperationDAOImp implements IOperationDAO<Operation> {
      * @return
      */
     @Override
-    public Optional<Operation> save(Operation operation) {
-        String sql = "INSERT INTO operation (number, created_at, price, payment, employee_code, current_account_number, saving_account_number) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    public Optional<Operation> saveForCA(Operation operation) {
+        String sql = "INSERT INTO operation (number, created_at, price, payment, employee_code, current_account_number) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, operation.getNumber());
             preparedStatement.setObject(2, operation.getCreatedAt());
             preparedStatement.setDouble(3, operation.getPrice());
-            preparedStatement.setObject(4, operation.getPayment());
+            preparedStatement.setObject(4, operation.getPayment(), Types.OTHER);
             preparedStatement.setString(5, operation.getEmployee().getCode());
             preparedStatement.setString(6, operation.getAccount().getNumber());
-            preparedStatement.setString(7, operation.getAccount().getNumber());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -45,8 +44,41 @@ public class OperationDAOImp implements IOperationDAO<Operation> {
      * @return
      */
     @Override
-    public Optional<Boolean> delete(Operation operation) {
-        return Optional.empty();
+    public Optional<Operation> saveForSA(Operation operation) {
+        String sql = "INSERT INTO operation (number, created_at, price, payment, employee_code, saving_account_number) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, operation.getNumber());
+            preparedStatement.setObject(2, operation.getCreatedAt());
+            preparedStatement.setDouble(3, operation.getPrice());
+            preparedStatement.setObject(4, operation.getPayment(), Types.OTHER);
+            preparedStatement.setString(5, operation.getEmployee().getCode());
+            preparedStatement.setString(6, operation.getAccount().getNumber());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return Optional.of(operation);
+    }
+
+    /**
+     * @param number
+     * @return
+     */
+    @Override
+    public boolean delete(String number) {
+        boolean deleted = false;
+        String sql = "DELETE FROM operation WHERE number = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, number);
+            deleted = preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Error when trying to delete");
+        }
+        return deleted;
     }
 
     /**

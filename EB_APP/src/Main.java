@@ -1,5 +1,6 @@
 
 import entities.Employee;
+import helpers.Helper;
 import services.EmployeeService;
 
 import java.time.LocalDate;
@@ -11,7 +12,7 @@ import java.util.stream.Stream;
 public class Main {
     public static void main(String[] args) {
 
-
+        Helper.call();
 
     }
 }

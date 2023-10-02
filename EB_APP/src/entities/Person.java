@@ -1,5 +1,7 @@
 package entities;
 
+import validation.Validator;
+
 import java.time.LocalDate;
 
 public abstract class Person {

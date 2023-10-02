@@ -53,7 +53,11 @@ public class Employee extends Person {
         return  "\nEmployee Information => {"+
                 " Code : "+this.getCode()+", "+
                 " First Name : "+this.getFirstName()+", "+
-                " Last Name : "+this.getLastName()+
+                " Last Name : "+this.getLastName()+", "+
+                " BirthDate : "+this.getBirthDate()+", "+
+                " Phone Number : "+this.getPhoneNumber()+", "+
+                " Email : "+this.getEmail()+", "+
+                " Recruited At : "+this.getRecruitedAt()+
                 " }";
     }
 }

@@ -22,4 +22,16 @@ public class Client extends Person {
     public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
     }
+
+    @Override
+    public String toString() {
+        return  "\nClient Information => {"+
+                " Code : "+this.getCode()+", "+
+                " First Name : "+this.getFirstName()+", "+
+                " Last Name : "+this.getLastName()+", "+
+                " BirthDate : "+this.getBirthDate()+", "+
+                " Phone Number : "+this.getPhoneNumber()+", "+
+                " Adress : "+this.getAdress()+
+                " }";
+    }
 }

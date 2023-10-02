@@ -42,8 +42,8 @@ public class AccountDAOImp implements IAccountDAO<Account> {
      * @return
      */
     @Override
-    public Optional<Boolean> updateStatus(accountStatus status) {
-        return Optional.empty();
+    public boolean updateStatus(accountStatus status, String number) {
+        return false;
     }
 
     /**

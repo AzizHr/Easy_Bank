@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +24,7 @@ public class ClientDAOImp implements IClientDAO<Client> {
     @Override
     public Optional<Client> findByCode(String code) {
         Client client = new Client();
-        String sql = "SELECT * FROM employee WHERE code = ?";
+        String sql = "SELECT * FROM client WHERE code = ?";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -52,7 +53,7 @@ public class ClientDAOImp implements IClientDAO<Client> {
     @Override
     public Optional<Client> save(Client client) {
 
-        String sql = "INSERT INTO client (code, first_name, last_name, birth_date, phone_number, adress) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO client (code, first_name, last_name, birth_date, phone_number, address) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -70,17 +71,17 @@ public class ClientDAOImp implements IClientDAO<Client> {
     }
 
     /**
-     * @param client
+     * @param code
      * @return
      */
     @Override
-    public boolean delete(Client client) {
+    public boolean delete(String code) {
         boolean deleted = false;
-        String sql = "DELETE FROM employee WHERE code = ?";
+        String sql = "DELETE FROM client WHERE code = ?";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, client.getCode());
+            preparedStatement.setString(1, code);
             deleted = preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             System.out.println("Error when trying to delete");
@@ -96,7 +97,7 @@ public class ClientDAOImp implements IClientDAO<Client> {
     public boolean update(Client client) {
         boolean updated = false;
 
-        String sql = "UPDATE client SET first_name = ?, last_name = ?, birth_date = ?, phone_number = ?, adress = ? WHERE code = ?";
+        String sql = "UPDATE client SET first_name = ?, last_name = ?, birth_date = ?, phone_number = ?, address = ? WHERE code = ?";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -118,6 +119,56 @@ public class ClientDAOImp implements IClientDAO<Client> {
      */
     @Override
     public Optional<List<Client>> findAll() {
-        return Optional.empty();
+
+        List<Client> clients = new ArrayList<>();
+
+        String sql = "SELECT * FROM client";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                Client client = new Client();
+                client.setCode(rs.getString(1));
+                client.setFirstName(rs.getString(2));
+                client.setLastName(rs.getString(3));
+                client.setBirthDate(rs.getDate(4).toLocalDate());
+                client.setPhoneNumber(rs.getString(5));
+                client.setAdress(rs.getString(6));
+                clients.add(client);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return Optional.of(clients);
+    }
+
+    /**
+     * @param adress 
+     * @return
+     */
+    @Override
+    public Optional<Client> findByAdress(String adress) {
+        Client client = new Client();
+        String sql = "SELECT * FROM client WHERE address = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, adress);
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next()) {
+                client.setCode(rs.getString(1));
+                client.setFirstName(rs.getString(2));
+                client.setLastName(rs.getString(3));
+                client.setBirthDate(rs.getDate(4).toLocalDate());
+                client.setPhoneNumber(rs.getString(5));
+                client.setAdress(rs.getString(6));
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error when trying to select");
+        }
+        return Optional.of(client);
     }
 }

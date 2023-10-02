@@ -1,13 +1,15 @@
 package entities;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Locale;
 
 public class MissionHistory {
 
     private Employee employee;
     private  Mission mission;
-    private Locale startedAt;
-    private Locale endedAt;
+    private LocalDate startedAt;
+    private LocalDate endedAt;
 
     public Employee getEmployee() {
         return employee;
@@ -25,19 +27,19 @@ public class MissionHistory {
         this.mission = mission;
     }
 
-    public Locale getStartedAt() {
+    public LocalDate getStartedAt() {
         return startedAt;
     }
 
-    public void setStartedAt(Locale startedAt) {
+    public void setStartedAt(LocalDate startedAt) {
         this.startedAt = startedAt;
     }
 
-    public Locale getEndedAt() {
+    public LocalDate getEndedAt() {
         return endedAt;
     }
 
-    public void setEndedAt(Locale endedAt) {
+    public void setEndedAt(LocalDate endedAt) {
         this.endedAt = endedAt;
     }
 }

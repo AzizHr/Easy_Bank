@@ -16,6 +16,9 @@ import java.util.Optional;
 public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> {
 
     private static final Connection connection = Database.getInstance().getConnection();
+    private static final ClientDAOImp clientDAOImp = new ClientDAOImp();
+    private static final EmployeeDAOImp employeeDAOImp = new EmployeeDAOImp();
+
     /**
      * @param currentAccount 
      * @return
@@ -23,17 +26,16 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
     @Override
     public Optional<CurrentAccount> save(CurrentAccount currentAccount) {
 
-        String sql = "INSERT INTO current_account (number, balance, created_at, status, overdraft, client_code, employee_code) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO current_account (number, balance, created_at, overdraft, client_code, employee_code) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, currentAccount.getNumber());
             preparedStatement.setDouble(2, currentAccount.getBalance());
             preparedStatement.setObject(3, currentAccount.getCreatedAt());
-            preparedStatement.setObject(4, currentAccount.getStatus());
-            preparedStatement.setObject(5, currentAccount.getOverdraft());
-            preparedStatement.setString(6, currentAccount.getClient().getCode());
-            preparedStatement.setString(7, currentAccount.getEmployee().getCode());
+            preparedStatement.setDouble(4, currentAccount.getOverdraft());
+            preparedStatement.setString(5, currentAccount.getClient().getCode());
+            preparedStatement.setString(6, currentAccount.getEmployee().getCode());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -67,14 +69,13 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
     @Override
     public boolean update(CurrentAccount currentAccount) {
         boolean updated = false;
-        String sql = "UPDATE current_account SET balance = ?, status = ? overdraft = ? WHERE number = ?";
+        String sql = "UPDATE current_account SET balance = ?, overdraft = ? WHERE number = ?";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setDouble(1, currentAccount.getBalance());
-            preparedStatement.setObject(2, currentAccount.getStatus());
-            preparedStatement.setObject(3, currentAccount.getOverdraft());
-            preparedStatement.setString(4, currentAccount.getNumber());
+            preparedStatement.setDouble(2, currentAccount.getOverdraft());
+            preparedStatement.setString(3, currentAccount.getNumber());
             updated = preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -87,8 +88,19 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
      * @return
      */
     @Override
-    public Optional<Boolean> updateStatus(accountStatus status) {
-        return Optional.empty();
+    public boolean updateStatus(accountStatus status, String number) {
+        boolean updated = false;
+        String sql = "UPDATE current_account SET account_status = ? WHERE number = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setObject(1, status, Types.OTHER);
+            preparedStatement.setString(2, number);
+            updated = preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return updated;
     }
 
     /**
@@ -96,7 +108,28 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
      */
     @Override
     public Optional<List<CurrentAccount>> findAll() {
-        return Optional.empty();
+        List<CurrentAccount> currentAccounts = new ArrayList<>();
+
+        String sql = "SELECT * FROM current_account";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                CurrentAccount currentAccount = new CurrentAccount();
+                currentAccount.setNumber(rs.getString(1));
+                currentAccount.setBalance(rs.getDouble(2));
+                currentAccount.setCreatedAt(rs.getDate(3).toLocalDate());
+                currentAccount.setStatus(accountStatus.valueOf(rs.getString(4)));
+                currentAccount.setOverdraft(rs.getDouble(5));
+                currentAccount.setClient(clientDAOImp.findByCode(rs.getString(6)).get());
+                currentAccount.setEmployee(employeeDAOImp.findByCode(rs.getString(7)).get());
+                currentAccounts.add(currentAccount);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return Optional.of(currentAccounts);
     }
 
     /**
@@ -118,8 +151,10 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
                 currentAccount.setNumber(rs.getString(1));
                 currentAccount.setBalance(rs.getDouble(2));
                 currentAccount.setCreatedAt(rs.getDate(3).toLocalDate());
-                currentAccount.setStatus((accountStatus) rs.getObject(4));
+                currentAccount.setStatus(accountStatus.valueOf(rs.getString(4)));
                 currentAccount.setOverdraft(rs.getDouble(5));
+                currentAccount.setClient(clientDAOImp.findByCode(rs.getString(6)).get());
+                currentAccount.setEmployee(employeeDAOImp.findByCode(rs.getString(7)).get());
                 currentAccounts.add(currentAccount);
             }
         } catch (SQLException e) {
@@ -134,7 +169,27 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
      */
     @Override
     public Optional<CurrentAccount> findByNumber(String number) {
-        return Optional.empty();
+        CurrentAccount currentAccount = new CurrentAccount();
+
+        String sql = "SELECT * FROM current_account WHERE number = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, number);
+            ResultSet rs = preparedStatement.executeQuery();
+            while(rs.next()) {
+                currentAccount.setNumber(rs.getString(1));
+                currentAccount.setBalance(rs.getDouble(2));
+                currentAccount.setCreatedAt(rs.getDate(3).toLocalDate());
+                currentAccount.setStatus(accountStatus.valueOf(rs.getString(4)));
+                currentAccount.setOverdraft(rs.getDouble(5));
+                currentAccount.setClient(clientDAOImp.findByCode(rs.getString(6)).get());
+                currentAccount.setEmployee(employeeDAOImp.findByCode(rs.getString(7)).get());
+            }
+        } catch (SQLException e) {
+            System.out.println("Error when trying to select");
+        }
+        return Optional.of(currentAccount);
     }
 
     /**
@@ -156,8 +211,10 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
                 currentAccount.setNumber(rs.getString(1));
                 currentAccount.setBalance(rs.getDouble(2));
                 currentAccount.setCreatedAt(rs.getDate(3).toLocalDate());
-                currentAccount.setStatus((accountStatus) rs.getObject(4));
+                currentAccount.setStatus(accountStatus.valueOf(rs.getString(4)));
                 currentAccount.setOverdraft(rs.getDouble(5));
+                currentAccount.setClient(clientDAOImp.findByCode(rs.getString(6)).get());
+                currentAccount.setEmployee(employeeDAOImp.findByCode(rs.getString(7)).get());
             }
         } catch (SQLException e) {
             System.out.println("Error when trying to select");

@@ -16,11 +16,11 @@ public class PersonDAOImp implements IPersonDAO<Person> {
     }
 
     /**
-     * @param person
+     * @param code
      * @return
      */
     @Override
-    public boolean delete(Person person) {
+    public boolean delete(String code) {
         return false;
     }
 

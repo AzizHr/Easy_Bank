@@ -7,13 +7,9 @@ import enums.accountStatus;
 import java.util.List;
 import java.util.Optional;
 
-public interface IAccountDAO<T> {
-
-    Optional<T> save(T t);
-    boolean delete(String number);
+public interface IAccountDAO<T> extends IDataDAO<T> {
     boolean update(T t);
-    Optional<Boolean> updateStatus(accountStatus status);
-    Optional<List<T>> findAll();
+    boolean updateStatus(accountStatus status, String number);
     Optional<List<T>> findByClient(String code);
     Optional<T> findByNumber(String number);
     Optional<T> findByOperationNumber(String number);
