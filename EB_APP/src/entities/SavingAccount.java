@@ -1,14 +1,19 @@
 package entities;
 
+import lombok.*;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
 public class SavingAccount extends Account {
 
     private double interest;
 
-    public double getInterest() {
-        return interest;
-    }
-
-    public void setInterest(double interest) {
-        this.interest = interest;
+    @Override
+    public String toString() {
+        return "SavingAccount{" +
+                "interest=" + interest +
+                '}';
     }
 }

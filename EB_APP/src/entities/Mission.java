@@ -1,7 +1,12 @@
 package entities;
 
 import java.util.List;
+import lombok.*;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
 public class Mission {
 
     private String code;
@@ -9,35 +14,13 @@ public class Mission {
     private String description;
     private List<MissionHistory> missionHistories;
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<MissionHistory> getMissionHistories() {
-        return missionHistories;
-    }
-
-    public void setMissionHistories(List<MissionHistory> missionHistories) {
-        this.missionHistories = missionHistories;
+    @Override
+    public String toString() {
+        return "Mission{" +
+                "code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", missionHistories=" + missionHistories +
+                '}';
     }
 }
