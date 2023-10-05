@@ -105,7 +105,25 @@ public class AgencyDAOImp implements IAgencyDAO<Agency> {
      */
     @Override
     public Optional<Agency> findByAdress(String adress) {
-        return Optional.empty();
+        Agency agency = new Agency();
+        String sql = "SELECT * FROM agency WHERE adress = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, adress);
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next()) {
+                agency.setCode(rs.getString(1));
+                agency.setName(rs.getString(2));
+                agency.setAdress(rs.getString(3));
+                agency.setPhoneNumber(rs.getString(4));
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error when trying to select");
+        }
+        return Optional.of(agency);
     }
 
     /**
