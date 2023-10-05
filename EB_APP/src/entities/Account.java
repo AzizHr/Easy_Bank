@@ -16,6 +16,7 @@ public abstract class Account {
     private double balance;
     private LocalDate createdAt;
     private accountStatus status;
+    private Agency agency;
     private Client client;
     private Employee employee;
     private List<Operation> operations;

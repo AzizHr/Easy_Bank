@@ -15,6 +15,7 @@ import java.util.Optional;
 public class SavingAccountDAOImp implements ISavingAccountDAO<SavingAccount> {
 
     private static final Connection connection = Database.getInstance().getConnection();
+    private static final AgencyDAOImp agencyDAOImp = new AgencyDAOImp();
     private static final ClientDAOImp clientDAOImp = new ClientDAOImp();
     private static final EmployeeDAOImp employeeDAOImp = new EmployeeDAOImp();
     /**
@@ -23,7 +24,7 @@ public class SavingAccountDAOImp implements ISavingAccountDAO<SavingAccount> {
      */
     @Override
     public Optional<SavingAccount> save(SavingAccount savingAccount) {
-        String sql = "INSERT INTO saving_account (number, balance, created_at, account_status, interest_rate, client_code, employee_code) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO saving_account (number, balance, created_at, account_status, interest, agency_code, client_code, employee_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -32,8 +33,9 @@ public class SavingAccountDAOImp implements ISavingAccountDAO<SavingAccount> {
             preparedStatement.setObject(3, savingAccount.getCreatedAt());
             preparedStatement.setObject(4, accountStatus.Active, Types.OTHER);
             preparedStatement.setObject(5, savingAccount.getInterest());
-            preparedStatement.setString(6, savingAccount.getClient().getCode());
-            preparedStatement.setString(7, savingAccount.getEmployee().getCode());
+            preparedStatement.setString(6, savingAccount.getAgency().getCode());
+            preparedStatement.setString(7, savingAccount.getClient().getCode());
+            preparedStatement.setString(8, savingAccount.getEmployee().getCode());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -67,14 +69,15 @@ public class SavingAccountDAOImp implements ISavingAccountDAO<SavingAccount> {
     @Override
     public boolean update(SavingAccount savingAccount) {
         boolean updated = false;
-        String sql = "UPDATE saving_account SET balance = ?, status = ? overdraft = ? WHERE number = ?";
+        String sql = "UPDATE saving_account SET balance = ?, status = ?, overdraft = ?, agency_code = ? WHERE number = ?";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setDouble(1, savingAccount.getBalance());
             preparedStatement.setObject(2, savingAccount.getStatus());
             preparedStatement.setObject(3, savingAccount.getInterest());
-            preparedStatement.setString(4, savingAccount.getNumber());
+            preparedStatement.setString(4, savingAccount.getAgency().getCode());
+            preparedStatement.setString(5, savingAccount.getNumber());
             updated = preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -121,8 +124,9 @@ public class SavingAccountDAOImp implements ISavingAccountDAO<SavingAccount> {
                 savingAccount.setCreatedAt(rs.getDate(3).toLocalDate());
                 savingAccount.setStatus(accountStatus.valueOf(rs.getString(4)));
                 savingAccount.setInterest(rs.getDouble(5));
-                savingAccount.setClient(clientDAOImp.findByCode(rs.getString(6)).get());
-                savingAccount.setEmployee(employeeDAOImp.findByCode(rs.getString(7)).get());
+                savingAccount.setAgency(agencyDAOImp.findByCode(rs.getString(6)).get());
+                savingAccount.setClient(clientDAOImp.findByCode(rs.getString(7)).get());
+                savingAccount.setEmployee(employeeDAOImp.findByCode(rs.getString(8)).get());
                 savingAccounts.add(savingAccount);
             }
         } catch (SQLException e) {
@@ -153,6 +157,7 @@ public class SavingAccountDAOImp implements ISavingAccountDAO<SavingAccount> {
                 savingAccount.setCreatedAt(rs.getDate(3).toLocalDate());
                 savingAccount.setStatus(accountStatus.valueOf(rs.getString(4)));
                 savingAccount.setInterest(rs.getDouble(5));
+                savingAccount.setAgency(agencyDAOImp.findByCode(rs.getString(6)).get());
                 savingAccounts.add(savingAccount);
             }
         } catch (SQLException e) {
@@ -181,6 +186,7 @@ public class SavingAccountDAOImp implements ISavingAccountDAO<SavingAccount> {
                 savingAccount.setCreatedAt(rs.getDate(3).toLocalDate());
                 savingAccount.setStatus(accountStatus.valueOf(rs.getString(4)));
                 savingAccount.setInterest(rs.getDouble(5));
+                savingAccount.setAgency(agencyDAOImp.findByCode(rs.getString(6)).get());
             }
         } catch (SQLException e) {
             System.out.println("Error when trying to select");
@@ -208,6 +214,7 @@ public class SavingAccountDAOImp implements ISavingAccountDAO<SavingAccount> {
                 savingAccount.setCreatedAt(rs.getDate(3).toLocalDate());
                 savingAccount.setStatus(accountStatus.valueOf(rs.getString(4)));
                 savingAccount.setInterest(rs.getDouble(5));
+                savingAccount.setAgency(agencyDAOImp.findByCode(rs.getString(6)).get());
             }
         } catch (SQLException e) {
             System.out.println("Error when trying to select");

@@ -16,6 +16,7 @@ import java.util.Optional;
 public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> {
 
     private static final Connection connection = Database.getInstance().getConnection();
+    private static final AgencyDAOImp agencyDAOImp = new AgencyDAOImp();
     private static final ClientDAOImp clientDAOImp = new ClientDAOImp();
     private static final EmployeeDAOImp employeeDAOImp = new EmployeeDAOImp();
 
@@ -26,7 +27,7 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
     @Override
     public Optional<CurrentAccount> save(CurrentAccount currentAccount) {
 
-        String sql = "INSERT INTO current_account (number, balance, created_at, account_status, overdraft, client_code, employee_code) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO current_account (number, balance, created_at, account_status, overdraft, agency_code, client_code, employee_code) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -35,8 +36,9 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
             preparedStatement.setObject(3, currentAccount.getCreatedAt());
             preparedStatement.setObject(4, accountStatus.Active, Types.OTHER);
             preparedStatement.setDouble(5, currentAccount.getOverdraft());
-            preparedStatement.setString(6, currentAccount.getClient().getCode());
-            preparedStatement.setString(7, currentAccount.getEmployee().getCode());
+            preparedStatement.setString(6, currentAccount.getAgency().getCode());
+            preparedStatement.setString(7, currentAccount.getClient().getCode());
+            preparedStatement.setString(8, currentAccount.getEmployee().getCode());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -76,6 +78,7 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setDouble(1, currentAccount.getBalance());
             preparedStatement.setDouble(2, currentAccount.getOverdraft());
+            preparedStatement.setString(3, currentAccount.getAgency().getCode());
             preparedStatement.setString(3, currentAccount.getNumber());
             updated = preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -123,8 +126,9 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
                 currentAccount.setCreatedAt(rs.getDate(3).toLocalDate());
                 currentAccount.setStatus(accountStatus.valueOf(rs.getString(4)));
                 currentAccount.setOverdraft(rs.getDouble(5));
-                currentAccount.setClient(clientDAOImp.findByCode(rs.getString(6)).get());
-                currentAccount.setEmployee(employeeDAOImp.findByCode(rs.getString(7)).get());
+                currentAccount.setAgency(agencyDAOImp.findByCode(rs.getString(6)).get());
+                currentAccount.setClient(clientDAOImp.findByCode(rs.getString(7)).get());
+                currentAccount.setEmployee(employeeDAOImp.findByCode(rs.getString(8)).get());
                 currentAccounts.add(currentAccount);
             }
         } catch (SQLException e) {
@@ -154,8 +158,9 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
                 currentAccount.setCreatedAt(rs.getDate(3).toLocalDate());
                 currentAccount.setStatus(accountStatus.valueOf(rs.getString(4)));
                 currentAccount.setOverdraft(rs.getDouble(5));
-                currentAccount.setClient(clientDAOImp.findByCode(rs.getString(6)).get());
-                currentAccount.setEmployee(employeeDAOImp.findByCode(rs.getString(7)).get());
+                currentAccount.setAgency(agencyDAOImp.findByCode(rs.getString(6)).get());
+                currentAccount.setClient(clientDAOImp.findByCode(rs.getString(7)).get());
+                currentAccount.setEmployee(employeeDAOImp.findByCode(rs.getString(8)).get());
                 currentAccounts.add(currentAccount);
             }
         } catch (SQLException e) {
@@ -184,8 +189,9 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
                 currentAccount.setCreatedAt(rs.getDate(3).toLocalDate());
                 currentAccount.setStatus(accountStatus.valueOf(rs.getString(4)));
                 currentAccount.setOverdraft(rs.getDouble(5));
-                currentAccount.setClient(clientDAOImp.findByCode(rs.getString(6)).get());
-                currentAccount.setEmployee(employeeDAOImp.findByCode(rs.getString(7)).get());
+                currentAccount.setAgency(agencyDAOImp.findByCode(rs.getString(6)).get());
+                currentAccount.setClient(clientDAOImp.findByCode(rs.getString(7)).get());
+                currentAccount.setEmployee(employeeDAOImp.findByCode(rs.getString(8)).get());
             }
         } catch (SQLException e) {
             System.out.println("Error when trying to select");
@@ -214,8 +220,9 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
                 currentAccount.setCreatedAt(rs.getDate(3).toLocalDate());
                 currentAccount.setStatus(accountStatus.valueOf(rs.getString(4)));
                 currentAccount.setOverdraft(rs.getDouble(5));
-                currentAccount.setClient(clientDAOImp.findByCode(rs.getString(6)).get());
-                currentAccount.setEmployee(employeeDAOImp.findByCode(rs.getString(7)).get());
+                currentAccount.setAgency(agencyDAOImp.findByCode(rs.getString(6)).get());
+                currentAccount.setClient(clientDAOImp.findByCode(rs.getString(7)).get());
+                currentAccount.setEmployee(employeeDAOImp.findByCode(rs.getString(8)).get());
             }
         } catch (SQLException e) {
             System.out.println("Error when trying to select");
