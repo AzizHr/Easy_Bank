@@ -66,6 +66,7 @@ public class PaymentDAOImp implements IPaymentDAO<Payment> {
      */
     @Override
     public boolean delete(String number) {
+        // ???
         boolean deleted = false;
         String sql = "DELETE FROM payment WHERE number = ?";
 
