@@ -60,9 +60,9 @@ public class DemandDAOImp implements IDemandDAO<Simulation> {
      * @return
      */
     @Override
-    public Optional<Simulation> findByCode(String number) {
+    public Optional<Simulation> findByNumber(String number) {
         Demand demand = new Demand();
-        String sql = "SELECT * FROM employee WHERE code = ?";
+        String sql = "SELECT * FROM demand WHERE number = ?";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
