@@ -10,7 +10,11 @@ import java.util.List;
 
 public class MissionHistoryService {
 
-    private static final MissionHistoryDAOImp missionHistoryDAOImp = new MissionHistoryDAOImp();
+    private static MissionHistoryDAOImp missionHistoryDAOImp;
+
+    public MissionHistoryService(MissionHistoryDAOImp instance) {
+        missionHistoryDAOImp = instance;
+    }
 
     public static void save(MissionHistory missionHistory) {
 

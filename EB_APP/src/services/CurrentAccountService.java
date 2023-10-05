@@ -11,7 +11,12 @@ import java.util.Optional;
 
 public class CurrentAccountService {
 
-    private static final CurrentAccountDAOImp currentAccountDAOImp = new CurrentAccountDAOImp();
+    private static CurrentAccountDAOImp currentAccountDAOImp;
+
+    public CurrentAccountService(CurrentAccountDAOImp instance) {
+        currentAccountDAOImp = instance;
+    }
+
     public static void save(CurrentAccount currentAccount) {
         System.out.println("New Current Account Added With Success!");
         currentAccountDAOImp.save(currentAccount).ifPresent(System.out::println);

@@ -1,19 +1,25 @@
 package daoImplementaion;
 
 import dao.IAgencyDAO;
+import database.Database;
 import entities.Agency;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 public class AgencyDAOImp implements IAgencyDAO<Agency> {
+
+    private static final Connection connection = Database.getInstance().getConnection();
     /**
      * @param agency 
      * @return
      */
     @Override
     public Optional<Agency> save(Agency agency) {
-        return Optional.empty();
+        
     }
 
     /**

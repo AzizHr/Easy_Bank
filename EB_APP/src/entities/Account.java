@@ -19,4 +19,5 @@ public abstract class Account {
     private Client client;
     private Employee employee;
     private List<Operation> operations;
+
 }

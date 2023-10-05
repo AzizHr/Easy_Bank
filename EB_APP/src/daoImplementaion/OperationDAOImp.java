@@ -96,7 +96,7 @@ public class OperationDAOImp implements IOperationDAO<Operation> {
             ResultSet rs = preparedStatement.executeQuery();
             if(rs.next()) {
                 operation.setNumber(rs.getString(1));
-                operation.setCreatedAt(rs.getDate(2).toLocalDate());
+                operation.setCreatedAt(rs.getTimestamp(2).toLocalDateTime());
                 operation.setPrice(rs.getDouble(3));
                 operation.setPayment((paymentType) rs.getObject(4) );
                 operation.setEmployee(employeeDAOImp.findByCode(rs.getString(5)).get());

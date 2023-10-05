@@ -10,7 +10,11 @@ import java.util.Optional;
 
 public class MissionService {
 
-    private static final MissionDAOImp missionDAOImp = new MissionDAOImp();
+    private static MissionDAOImp missionDAOImp;
+
+    public MissionService(MissionDAOImp instance) {
+        missionDAOImp= instance;
+    }
 
     public static void findByCode(String code) {
 

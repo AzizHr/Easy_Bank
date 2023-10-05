@@ -10,7 +10,11 @@ import java.util.stream.Collectors;
 
 public class EmployeeService {
 
-    private static final EmployeeDAOImp employeeDAOImp = new EmployeeDAOImp();
+    private static EmployeeDAOImp employeeDAOImp;
+
+    public EmployeeService(EmployeeDAOImp instance) {
+        employeeDAOImp = instance;
+    }
 
     public static void save(Employee employee) {
 

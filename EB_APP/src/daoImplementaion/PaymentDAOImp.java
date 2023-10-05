@@ -3,13 +3,15 @@ package daoImplementaion;
 import dao.IPaymentDAO;
 import entities.Payment;
 
+import java.util.Optional;
+
 public class PaymentDAOImp implements IPaymentDAO<Payment> {
     /**
-     * @param payment 
+     * @param payment
      * @return
      */
     @Override
-    public Payment save(Payment payment) {
-        return null;
+    public Optional<Payment> save(Payment payment) {
+        return Optional.empty();
     }
 }

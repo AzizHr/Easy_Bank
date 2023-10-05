@@ -15,14 +15,4 @@ public abstract class Person {
     private LocalDate birthDate;
     private String phoneNumber;
 
-    @Override
-    public String toString() {
-        return "Person{" +
-                "code='" + code + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", birthDate=" + birthDate +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                '}';
-    }
 }

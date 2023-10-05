@@ -2,15 +2,17 @@ package services;
 
 import daoImplementaion.ClientDAOImp;
 import entities.Client;
-import entities.Employee;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 public class ClientService {
 
-    private static final ClientDAOImp clientDAOImp = new ClientDAOImp();
+    private static ClientDAOImp clientDAOImp;
+
+    public ClientService(ClientDAOImp instance) {
+        clientDAOImp = instance;
+    }
 
     public static void save(Client client) {
 

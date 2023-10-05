@@ -9,7 +9,11 @@ import java.util.Optional;
 
 public class OperationService {
 
-    private static final OperationDAOImp operationDAOImp = new OperationDAOImp();
+    private static OperationDAOImp operationDAOImp;
+
+    public OperationService(OperationDAOImp instance) {
+        operationDAOImp = instance;
+    }
 
 
     public static void saveForCA(Operation operation) {
