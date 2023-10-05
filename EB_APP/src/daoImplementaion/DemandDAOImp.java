@@ -82,4 +82,25 @@ public class DemandDAOImp implements IDemandDAO<Simulation> {
         }
         return Optional.of(demand);
     }
+
+    /**
+     * @param status 
+     * @param number
+     * @return
+     */
+    @Override
+    public boolean updateStatus(demandStatus status, String number) {
+        boolean updated = false;
+        String sql = "UPDATE demand SET status = ? WHERE number = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setObject(1, status, Types.OTHER);
+            preparedStatement.setString(2, number);
+            updated = preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return updated;
+    }
 }
