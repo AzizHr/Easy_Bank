@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 public class Operation {
 
     private String number;
+    // Updated
     private LocalDateTime createdAt;
     private double price;
     private paymentType payment;
