@@ -6,6 +6,6 @@ import java.util.Optional;
 
 public interface IPaymentDAO<T> {
 
-    Optional<T> save(T t);
-
+    Optional<T> saveForCA(T t);
+    Optional<T> saveForSA(T t);
 }
