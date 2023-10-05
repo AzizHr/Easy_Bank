@@ -35,12 +35,22 @@ public class AgencyDAOImp implements IAgencyDAO<Agency> {
     }
 
     /**
-     * @param ID 
+     * @param code
      * @return
      */
     @Override
-    public boolean delete(String ID) {
-        return false;
+    public boolean delete(String code) {
+        boolean deleted = false;
+        String sql = "DELETE FROM agency WHERE code = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, code);
+            deleted = preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Error when trying to delete");
+        }
+        return deleted;
     }
 
     /**
