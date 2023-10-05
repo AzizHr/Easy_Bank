@@ -19,7 +19,19 @@ public class AgencyDAOImp implements IAgencyDAO<Agency> {
      */
     @Override
     public Optional<Agency> save(Agency agency) {
-        
+        String sql = "INSERT INTO agency (code, name, address, phone_number) VALUES (?, ?, ?, ?)";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, agency.getCode());
+            preparedStatement.setString(2, agency.getName());
+            preparedStatement.setString(3, agency.getAdress());
+            preparedStatement.setString(4, agency.getPhoneNumber());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return Optional.of(agency);
     }
 
     /**
