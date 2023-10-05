@@ -3,9 +3,11 @@ package daoImplementaion;
 import dao.IAgencyDAO;
 import database.Database;
 import entities.Agency;
+import entities.Client;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -76,7 +78,25 @@ public class AgencyDAOImp implements IAgencyDAO<Agency> {
      */
     @Override
     public Optional<Agency> findByCode(String code) {
-        return Optional.empty();
+        Agency agency = new Agency();
+        String sql = "SELECT * FROM agency WHERE code = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, code);
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next()) {
+                agency.setCode(rs.getString(1));
+                agency.setName(rs.getString(2));
+                agency.setAdress(rs.getString(3));
+                agency.setPhoneNumber(rs.getString(4));
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error when trying to select");
+        }
+        return Optional.of(agency);
     }
 
     /**
