@@ -61,6 +61,25 @@ public class DemandDAOImp implements IDemandDAO<Simulation> {
      */
     @Override
     public Optional<Simulation> findByCode(String number) {
-        
+        Demand demand = new Demand();
+        String sql = "SELECT * FROM employee WHERE code = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, number);
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next()) {
+                demand.setNumber(rs.getString(1));
+                demand.setDate(rs.getDate(2).toLocalDate());
+                demand.setStatus(demandStatus.valueOf(rs.getString(3)));
+                demand.setPrice(rs.getDouble(4));
+                demand.setDuration(rs.getInt(5));
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error when trying to select");
+        }
+        return Optional.of(demand);
     }
 }
