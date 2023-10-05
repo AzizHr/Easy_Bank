@@ -59,4 +59,23 @@ public class PaymentDAOImp implements IPaymentDAO<Payment> {
         }
         return Optional.of(payment);
     }
+
+    /**
+     * @param number 
+     * @return
+     */
+    @Override
+    public boolean delete(String number) {
+        boolean deleted = false;
+        String sql = "DELETE FROM payment WHERE number = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, number);
+            deleted = preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Error when trying to delete");
+        }
+        return deleted;
+    }
 }
