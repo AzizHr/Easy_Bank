@@ -68,8 +68,22 @@ public class AgencyDAOImp implements IAgencyDAO<Agency> {
      * @return
      */
     @Override
-    public Optional<Agency> update(Agency agency) {
-        return Optional.empty();
+    public boolean update(Agency agency) {
+        boolean updated = false;
+
+        String sql = "UPDATE agency SET name = ?, adress = ?, phone_number = ? WHERE code = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, agency.getName());
+            preparedStatement.setString(2, agency.getAdress());
+            preparedStatement.setObject(3, agency.getPhoneNumber());
+            preparedStatement.setString(4, agency.getCode());
+            updated = preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return updated;
     }
 
     /**
