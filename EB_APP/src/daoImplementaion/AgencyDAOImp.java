@@ -69,6 +69,7 @@ public class AgencyDAOImp implements IAgencyDAO<Agency> {
      */
     @Override
     public boolean update(Agency agency) {
+        // UPDATE 
         boolean updated = false;
 
         String sql = "UPDATE agency SET name = ?, adress = ?, phone_number = ? WHERE code = ?";
