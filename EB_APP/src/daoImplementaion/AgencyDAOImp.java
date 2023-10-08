@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,7 +70,7 @@ public class AgencyDAOImp implements IAgencyDAO<Agency> {
      */
     @Override
     public boolean update(Agency agency) {
-        // UPDATE 
+        // UPDATE
         boolean updated = false;
 
         String sql = "UPDATE agency SET name = ?, adress = ?, phone_number = ? WHERE code = ?";
@@ -143,11 +144,31 @@ public class AgencyDAOImp implements IAgencyDAO<Agency> {
     }
 
     /**
-     * @param agency 
+     * @param employeeCode
      * @return
      */
     @Override
-    public Optional<List<Agency>> findByEmployee(Agency agency) {
-        return Optional.empty();
+    public Optional<List<Agency>> findByEmployee(String employeeCode) {
+
+        List<Agency> agencies = new ArrayList<>();
+        String sql = "SELECT * FROM agency WHERE code IN (SELECT code FROM employee WHERE code = ?)";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, employeeCode);
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next()) {
+                Agency agency = new Agency();
+                agency.setCode(rs.getString(1));
+                agency.setName(rs.getString(2));
+                agency.setAdress(rs.getString(3));
+                agency.setPhoneNumber(rs.getString(4));
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error when trying to select");
+        }
+        return Optional.of(agencies);
     }
 }
