@@ -127,6 +127,7 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
+              
                 Employee employee = new Employee();
                 employee.setCode(rs.getString(1));
                 employee.setFirstName(rs.getString(2));
@@ -140,6 +141,7 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
         return Optional.of(employees);
     }
 

@@ -1,6 +1,5 @@
 package entities;
 
-
 import lombok.*;
 import java.time.LocalDate;
 
@@ -23,5 +22,4 @@ public class MissionHistory {
                 ", startedAt=" + startedAt +
                 ", endedAt=" + endedAt +
                 '}';
-    }
 }

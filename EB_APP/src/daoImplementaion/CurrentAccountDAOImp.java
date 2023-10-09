@@ -94,6 +94,7 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
     @Override
     public boolean updateStatus(accountStatus status, String number) {
         boolean updated = false;
+
         String sql = "UPDATE current_account SET account_status = ? WHERE number = ?";
 
         try {
@@ -119,7 +120,8 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()) {
+
+          while (rs.next()) {
                 CurrentAccount currentAccount = new CurrentAccount();
                 currentAccount.setNumber(rs.getString(1));
                 currentAccount.setBalance(rs.getDouble(2));

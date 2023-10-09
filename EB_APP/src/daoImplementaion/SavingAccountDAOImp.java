@@ -6,7 +6,6 @@ import entities.CurrentAccount;
 import entities.Person;
 import entities.SavingAccount;
 import enums.accountStatus;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +17,7 @@ public class SavingAccountDAOImp implements ISavingAccountDAO<SavingAccount> {
     private static final AgencyDAOImp agencyDAOImp = new AgencyDAOImp();
     private static final ClientDAOImp clientDAOImp = new ClientDAOImp();
     private static final EmployeeDAOImp employeeDAOImp = new EmployeeDAOImp();
+
     /**
      * @param savingAccount 
      * @return
@@ -92,6 +92,7 @@ public class SavingAccountDAOImp implements ISavingAccountDAO<SavingAccount> {
     @Override
     public boolean updateStatus(accountStatus status, String number) {
         boolean updated = false;
+
         String sql = "UPDATE saving_account SET account_status = ? WHERE number = ?";
 
         try {
@@ -99,9 +100,11 @@ public class SavingAccountDAOImp implements ISavingAccountDAO<SavingAccount> {
             preparedStatement.setObject(1, status);
             preparedStatement.setString(2, number);
             updated = preparedStatement.executeUpdate() > 0;
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
         return updated;
     }
 
@@ -132,6 +135,7 @@ public class SavingAccountDAOImp implements ISavingAccountDAO<SavingAccount> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
         return Optional.of(savingAccounts);
     }
 

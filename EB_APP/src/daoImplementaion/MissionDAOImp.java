@@ -4,7 +4,6 @@ import dao.IMissionDAO;
 import database.Database;
 import entities.Employee;
 import entities.Mission;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,7 +22,8 @@ public class MissionDAOImp implements IMissionDAO<Mission> {
      */
     @Override
     public Optional<Mission> save(Mission mission) {
-        String sql = "INSERT INTO mission (code, name, description) VALUES (?, ?, ?)";
+
+      String sql = "INSERT INTO mission (code, name, description) VALUES (?, ?, ?)";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -69,7 +69,8 @@ public class MissionDAOImp implements IMissionDAO<Mission> {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()) {
+
+          while (rs.next()) {
                 Mission mission = new Mission();
                 mission.setCode(rs.getString(1));
                 mission.setName(rs.getString(2));
@@ -79,6 +80,7 @@ public class MissionDAOImp implements IMissionDAO<Mission> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
         return Optional.of(missions);
     }
 
@@ -90,11 +92,12 @@ public class MissionDAOImp implements IMissionDAO<Mission> {
     public Optional<Mission> findByCode(String code) {
         Mission mission = new Mission();
         String sql = "SELECT * FROM mission WHERE code = ?";
-
+      
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, code);
-            ResultSet rs = preparedStatement.executeQuery();
+
+          ResultSet rs = preparedStatement.executeQuery();
             if(rs.next()) {
                 mission.setCode(rs.getString(1));
                 mission.setName(rs.getString(2));
@@ -105,6 +108,25 @@ public class MissionDAOImp implements IMissionDAO<Mission> {
         } catch (SQLException e) {
             System.out.println("Error when trying to select");
         }
-        return Optional.of(mission);
+    }
+    
+    /**
+     * @param code 
+     * @return
+     */
+    @Override
+    public boolean delete(String code) {
+
+        boolean deleted = false;
+        String sql = "DELETE FROM mission WHERE code = ?";
+        try {
+          PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, code);
+         deleted = preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Error when trying to delete");
+        }
+        return deleted;
+        
     }
 }

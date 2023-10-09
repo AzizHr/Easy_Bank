@@ -127,6 +127,7 @@ public class ClientDAOImp implements IClientDAO<Client> {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
+          
             while (rs.next()) {
                 Client client = new Client();
                 client.setCode(rs.getString(1));
@@ -140,6 +141,7 @@ public class ClientDAOImp implements IClientDAO<Client> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
         return Optional.of(clients);
     }
 
@@ -150,6 +152,7 @@ public class ClientDAOImp implements IClientDAO<Client> {
     @Override
     public Optional<Client> findByAdress(String adress) {
         Client client = new Client();
+      
         String sql = "SELECT * FROM client WHERE address = ?";
 
         try {

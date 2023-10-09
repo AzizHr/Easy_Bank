@@ -75,4 +75,8 @@ public class OperationService {
 
     }
 
+    public static boolean delete(String number) {
+        return operationDAOImp.delete(number);
+    }
+
 }

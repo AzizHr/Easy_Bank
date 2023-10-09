@@ -102,5 +102,13 @@ public class ClientService {
             throw new RuntimeException(e);
         }
     }
+  
+    public static Optional<List<Client>> findAll() {
+        return clientDAOImp.findAll();
+    }
+
+    public static Optional<Client> findByAdress(String adress) {
+        return clientDAOImp.findByAdress(adress);
+    }
 
 }

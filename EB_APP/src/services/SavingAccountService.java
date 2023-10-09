@@ -161,4 +161,12 @@ public class SavingAccountService {
         }
 
     }
+  
+    public static boolean updateStatus(accountStatus status, String number) {
+        return savingAccountDAOImp.updateStatus(status, number);
+    }
+
+    public static Optional<List<SavingAccount>> findAll() {
+        return savingAccountDAOImp.findAll();
+    }
 }

@@ -7,6 +7,7 @@ import enums.accountStatus;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class CurrentAccountService {
 
@@ -160,6 +161,14 @@ public class CurrentAccountService {
             throw new RuntimeException(e);
         }
 
+    }
+  
+    public static boolean updateStatus(accountStatus status, String number) {
+        return currentAccountDAOImp.updateStatus(status, number);
+    }
+
+    public static Optional<List<CurrentAccount>> findAll() {
+        return currentAccountDAOImp.findAll();
     }
 
 }

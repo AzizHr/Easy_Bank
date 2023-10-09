@@ -101,6 +101,14 @@ public class EmployeeService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+}
+  
+    public static Optional<List<Employee>> findAll() {
+        return employeeDAOImp.findAll();
+    }
+
+    public static Optional<Employee> findByPhoneNumber(String phoneNumber) {
+        return employeeDAOImp.findByPhoneNumber(phoneNumber);
     }
 
 }
