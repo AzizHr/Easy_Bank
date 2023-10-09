@@ -1,53 +1,78 @@
 package services;
 
 import daoImplementaion.OperationDAOImp;
-import entities.Client;
-import entities.Employee;
 import entities.Operation;
-
 import java.util.Optional;
 
 public class OperationService {
 
-    private static OperationDAOImp operationDAOImp;
+    private  OperationDAOImp operationDAOImp;
 
     public OperationService(OperationDAOImp instance) {
         operationDAOImp = instance;
     }
 
 
-    public static void saveForCA(Operation operation) {
+    public  Operation saveForCA(Operation operation) {
 
-        System.out.println("New Operation Added With Success!");
-        operationDAOImp.saveForCA(operation).ifPresent(System.out::println);
+        try {
+            Optional<Operation> operationOptional = operationDAOImp.saveForCA(operation);
+
+            if (operationOptional.isPresent()) {
+                return operationOptional.get();
+            } else {
+                throw new Exception("Error When Trying To Insert!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
-    public static void saveForSA(Operation operation) {
+    public  Operation saveForSA(Operation operation) {
 
-        System.out.println("New Operation Added With Success!");
-        operationDAOImp.saveForSA(operation).ifPresent(System.out::println);
+        try {
+            Optional<Operation> operationOptional = operationDAOImp.saveForSA(operation);
+
+            if (operationOptional.isPresent()) {
+                return operationOptional.get();
+            } else {
+                throw new Exception("Error When Trying To Insert!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
-    public static void delete(String number) {
+    public  boolean delete(String number) {
 
-        if(operationDAOImp.delete(number)) {
-            System.out.println("Deleted With Success!");
-        } else {
-            System.out.println("Not Found!");
+        try {
+            if(operationDAOImp.delete(number)) {
+                return true;
+            } else {
+                throw new Exception("Error When Trying To Delete!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public static void findByNumber(String number) {
+    public  Operation findByNumber(String number) {
 
-        Optional<Operation> operationOptional = operationDAOImp.findByNumber(number);
+        try {
 
-        if (operationOptional.isPresent()) {
-            Operation operation = operationOptional.get();
-            System.out.println("Operation Found : ");
-            System.out.println(operation);
-        } else {
-            System.out.println("No Operation With This Number Found!");
+            Optional<Operation> operationOptional = operationDAOImp.findByNumber(number);
+
+            if (operationOptional.isPresent()) {
+                return operationOptional.get();
+            } else {
+                throw new Exception("No Operation With This Number Found!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+
     }
 
 }

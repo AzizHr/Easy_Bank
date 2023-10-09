@@ -1,45 +1,63 @@
 package services;
 
 import daoImplementaion.MissionHistoryDAOImp;
-import entities.Employee;
 import entities.MissionHistory;
-
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class MissionHistoryService {
 
-    private static MissionHistoryDAOImp missionHistoryDAOImp;
+    private  MissionHistoryDAOImp missionHistoryDAOImp;
 
     public MissionHistoryService(MissionHistoryDAOImp instance) {
         missionHistoryDAOImp = instance;
     }
 
-    public static void save(MissionHistory missionHistory) {
+    public  MissionHistory save(MissionHistory missionHistory) {
 
-        System.out.println("New Assignment Added With Success!");
-        missionHistoryDAOImp.save(missionHistory).ifPresent(System.out::println);
+        try {
+            Optional<MissionHistory> missionHistoryOptional = missionHistoryDAOImp.save(missionHistory);
+
+            if (missionHistoryOptional.isPresent()) {
+                return missionHistoryOptional.get();
+            } else {
+                throw new Exception("Error When Trying To Insert!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
-    public static void delete(String employeeCode, String missionCode, LocalDate startedAt) {
+    public  boolean delete(String employeeCode, String missionCode, LocalDate startedAt) {
 
-        if(missionHistoryDAOImp.delete(employeeCode, missionCode, startedAt)) {
-            System.out.println("Deleted With Success!");
-        } else {
-            System.out.println("Not Found!");
+        try {
+            if(missionHistoryDAOImp.delete(employeeCode, missionCode, startedAt)) {
+                return true;
+            } else {
+                throw new Exception("Error When Trying To Delete!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public static void findAll() {
-        List<MissionHistory> missionHistories = missionHistoryDAOImp.findAll().orElse(Collections.emptyList());
+    public  List<MissionHistory> findAll() {
 
-        if (missionHistories.isEmpty()) {
-            System.out.println("No Assignments Found!");
-        } else {
-            missionHistories.forEach(System.out::println);
+        try {
+            List<MissionHistory> missionHistories = missionHistoryDAOImp.findAll().orElse(Collections.emptyList());
+
+            if (missionHistories.isEmpty()) {
+                throw new Exception("No Mission Histories Found!");
+            } else {
+                return missionHistories;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+
     }
 
 }

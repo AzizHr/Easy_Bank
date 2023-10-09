@@ -61,7 +61,25 @@ public class AgencyDAOImp implements IAgencyDAO<Agency> {
      */
     @Override
     public Optional<List<Agency>> findAll() {
-        return Optional.empty();
+        List<Agency> agencies = new ArrayList<>();
+
+        String sql = "SELECT * FROM agency";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                Agency agency = new Agency();
+                agency.setCode(rs.getString(1));
+                agency.setName(rs.getString(2));
+                agency.setAdress(rs.getString(3));
+                agency.setPhoneNumber(rs.getString(4));
+                agencies.add(agency);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return Optional.of(agencies);
     }
 
     /**
@@ -148,9 +166,9 @@ public class AgencyDAOImp implements IAgencyDAO<Agency> {
      * @return
      */
     @Override
-    public Optional<List<Agency>> findByEmployee(String employeeCode) {
+    public Optional<Agency> findByEmployee(String employeeCode) {
 
-        List<Agency> agencies = new ArrayList<>();
+        Agency agency= new Agency();
         String sql = "SELECT * FROM agency WHERE code IN (SELECT code FROM employee WHERE code = ?)";
 
         try {
@@ -158,7 +176,6 @@ public class AgencyDAOImp implements IAgencyDAO<Agency> {
             preparedStatement.setString(1, employeeCode);
             ResultSet rs = preparedStatement.executeQuery();
             if(rs.next()) {
-                Agency agency = new Agency();
                 agency.setCode(rs.getString(1));
                 agency.setName(rs.getString(2));
                 agency.setAdress(rs.getString(3));
@@ -169,6 +186,6 @@ public class AgencyDAOImp implements IAgencyDAO<Agency> {
         } catch (SQLException e) {
             System.out.println("Error when trying to select");
         }
-        return Optional.of(agencies);
+        return Optional.of(agency);
     }
 }

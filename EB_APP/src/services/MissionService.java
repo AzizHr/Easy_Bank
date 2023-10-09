@@ -1,64 +1,76 @@
 package services;
 
 import daoImplementaion.MissionDAOImp;
-import entities.Employee;
 import entities.Mission;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 public class MissionService {
 
-    private static MissionDAOImp missionDAOImp;
+    private  MissionDAOImp missionDAOImp;
 
     public MissionService(MissionDAOImp instance) {
         missionDAOImp= instance;
     }
 
-    public static void findByCode(String code) {
+    public  Mission findByCode(String code) {
 
-        Optional<Mission> missionOptional = missionDAOImp.findByCode(code);
+        try {
 
-        if (missionOptional.isPresent()) {
-            Mission mission = missionOptional.get();
-            System.out.println("Mission Found : ");
-            System.out.println(mission);
-        } else {
-            System.out.println("No Mission With This Code Found!");
+            Optional<Mission> missionOptional = missionDAOImp.findByCode(code);
+
+            if (missionOptional.isPresent()) {
+                return missionOptional.get();
+            } else {
+                throw new Exception("No Mission With This Code Found!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public static Mission getOne(String code) {
+    public  Mission save(Mission mission) {
 
-        Optional<Mission> missionOptional = missionDAOImp.findByCode(code);
 
-        return missionOptional.orElse(null);
+        try {
+            Optional<Mission> missionOptional = missionDAOImp.save(mission);
+
+            if (missionOptional.isPresent()) {
+                return missionOptional.get();
+            } else {
+                throw new Exception("Error When Trying To Insert!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
-    public static void save(Mission mission) {
+    public  boolean delete(String code) {
 
-        System.out.println("New Mission Added With Success!");
-        missionDAOImp.save(mission).ifPresent(System.out::println);
-
-    }
-
-    public static void delete(String code) {
-
-        if(missionDAOImp.delete(code)) {
-            System.out.println("Deleted With Success!");
-        } else {
-            System.out.println("Not Found!");
+        try {
+            if(missionDAOImp.delete(code)) {
+                return true;
+            } else {
+                throw new Exception("Error When Trying To Delete!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public static void findAll() {
-        List<Mission> missions = missionDAOImp.findAll().orElse(Collections.emptyList());
+    public  List<Mission> findAll() {
+        try {
+            List<Mission> missions = missionDAOImp.findAll().orElse(Collections.emptyList());
 
-        if (missions.isEmpty()) {
-            System.out.println("No Missions Found!");
-        } else {
-            missions.forEach(System.out::println);
+            if (missions.isEmpty()) {
+                throw new Exception("No Missions Found!");
+            } else {
+                return missions;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

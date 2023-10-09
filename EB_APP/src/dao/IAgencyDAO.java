@@ -8,6 +8,6 @@ public interface IAgencyDAO<T> extends IDataDAO<T> {
     boolean update(T t);
     Optional<T> findByCode(String code);
     Optional<T> findByAdress(String adress);
-    Optional<List<T>> findByEmployee(String employeeCode);
+    Optional<T> findByEmployee(String employeeCode);
 
 }

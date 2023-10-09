@@ -3,15 +3,16 @@ package daoImplementaion;
 import dao.IPaymentDAO;
 import database.Database;
 import entities.Payment;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Types;
+import enums.paymentType;
+import java.sql.*;
 import java.util.Optional;
 
 public class PaymentDAOImp implements IPaymentDAO<Payment> {
 
     private static final Connection connection = Database.getInstance().getConnection();
+    private static final EmployeeDAOImp employeeDAOImp = new EmployeeDAOImp();
+    private static final CurrentAccountDAOImp currentAccountDAOImp = new CurrentAccountDAOImp();
+    private static final SavingAccountDAOImp savingAccountDAOImp = new SavingAccountDAOImp();
 
 
     /**
@@ -78,5 +79,39 @@ public class PaymentDAOImp implements IPaymentDAO<Payment> {
             System.out.println("Error when trying to delete");
         }
         return deleted;
+    }
+
+    /**
+     * @param number 
+     * @return
+     */
+    @Override
+    public Optional<Payment> findByNumber(String number) {
+
+        Payment payment = new Payment();
+        String sql = "SELECT * FROM payment WHERE number = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, number);
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next()) {
+                payment.setNumber(rs.getString(1));
+                payment.setCreatedAt(rs.getTimestamp(2).toLocalDateTime());
+                payment.setPrice(rs.getDouble(3));
+                payment.setPayment((paymentType) rs.getObject(4) );
+                payment.setEmployee(employeeDAOImp.findByCode(rs.getString(5)).get());
+                payment.setAccount(currentAccountDAOImp.findByNumber(rs.getString(6)).get());
+                payment.setAccount(savingAccountDAOImp.findByNumber(rs.getString(7)).get());
+                payment.setDestinationAccount(currentAccountDAOImp.findByNumber(rs.getString(6)).get());
+                payment.setDestinationAccount(savingAccountDAOImp.findByNumber(rs.getString(7)).get());
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error when trying to select");
+        }
+        return Optional.of(payment);
+
     }
 }

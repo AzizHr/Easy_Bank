@@ -2,7 +2,6 @@ package services;
 
 import daoImplementaion.CurrentAccountDAOImp;
 import entities.CurrentAccount;
-import entities.Employee;
 import enums.accountStatus;
 
 import java.util.Collections;
@@ -11,110 +10,156 @@ import java.util.Optional;
 
 public class CurrentAccountService {
 
-    private static CurrentAccountDAOImp currentAccountDAOImp;
+    private  CurrentAccountDAOImp currentAccountDAOImp;
 
     public CurrentAccountService(CurrentAccountDAOImp instance) {
         currentAccountDAOImp = instance;
     }
 
-    public static void save(CurrentAccount currentAccount) {
-        System.out.println("New Current Account Added With Success!");
-        currentAccountDAOImp.save(currentAccount).ifPresent(System.out::println);
+    public  CurrentAccount save(CurrentAccount currentAccount) {
+
+        try {
+            Optional<CurrentAccount> currentAccountOptional = currentAccountDAOImp.save(currentAccount);
+
+            if (currentAccountOptional.isPresent()) {
+                return currentAccountOptional.get();
+            } else {
+                throw new Exception("Error When Trying To Insert!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
-    public static void findByClient(String code) {
+    public  boolean delete(String code) {
 
-        List<CurrentAccount> currentAccounts = currentAccountDAOImp.findAll().orElse(Collections.emptyList());
-
-        if (currentAccounts.isEmpty()) {
-            System.out.println("No Current Accounts Found!");
-        } else {
-            currentAccounts.forEach(System.out::println);
+        try {
+            if(currentAccountDAOImp.delete(code)) {
+                return true;
+            } else {
+                throw new Exception("Error When Trying To Delete!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public static void delete(String number) {
-        if(currentAccountDAOImp.delete(number)) {
-            System.out.println("Deleted With Success!");
-        } else {
-            System.out.println("Not Found!");
+    public  List<CurrentAccount> findAll() {
+
+        try {
+            List<CurrentAccount> currentAccounts = currentAccountDAOImp.findAll().orElse(Collections.emptyList());
+
+            if (currentAccounts.isEmpty()) {
+                throw new Exception("No Current Accounts Found!");
+            } else {
+                return currentAccounts;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public static void update(CurrentAccount currentAccount) {
+    public  CurrentAccount findByNumber(String number) {
 
-        if(currentAccountDAOImp.update(currentAccount)) {
-            System.out.println("Updated With Success!");
-        } else {
-            System.out.println("Error!");
+        try {
+
+            Optional<CurrentAccount> currentAccountOptional = currentAccountDAOImp.findByNumber(number);
+
+            if (currentAccountOptional.isPresent()) {
+                return currentAccountOptional.get();
+            } else {
+                throw new Exception("No Current Account With This Number Found!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public static void updateStatus(accountStatus status, String number) {
+    public  List<CurrentAccount> findByClient(String clientCode) {
 
-        if(currentAccountDAOImp.updateStatus(status, number)) {
-            System.out.println("Updated With Success!");
-        } else {
-            System.out.println("Error!");
+        try {
+            List<CurrentAccount> currentAccounts = currentAccountDAOImp.findAll().orElse(Collections.emptyList());
+
+            if (currentAccounts.isEmpty()) {
+                throw new Exception("No Current Accounts Found!");
+            } else {
+                return currentAccounts;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public static void findByOperationNumber(String number) {
-        Optional<CurrentAccount> currentAccountOptional = currentAccountDAOImp.findByOperationNumber(number);
+    public  CurrentAccount findByOperationNumber(String operationNumber) {
 
-        if (currentAccountOptional.isPresent()) {
-            CurrentAccount currentAccount = currentAccountOptional.get();
-            System.out.println("Current Account Found : ");
-            System.out.println(currentAccount);
-        } else {
-            System.out.println("No Current Account With This Operation Number Found!");
+        try {
+
+            Optional<CurrentAccount> currentAccountOptional = currentAccountDAOImp.findByOperationNumber(operationNumber);
+
+            if (currentAccountOptional.isPresent()) {
+                return currentAccountOptional.get();
+            } else {
+                throw new Exception("No Current Account With This Operation Number Found!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public static void findByNumber(String number) {
 
-        Optional<CurrentAccount> currentAccountOptional = currentAccountDAOImp.findByNumber(number);
+    public  boolean update(CurrentAccount currentAccount) {
 
-        if (currentAccountOptional.isPresent()) {
-            CurrentAccount currentAccount = currentAccountOptional.get();
-            System.out.println("Current Account Found : ");
-            System.out.println(currentAccount);
-        } else {
-            System.out.println("No Current Account With This Number Found!");
+        try {
+            if(currentAccountDAOImp.update(currentAccount)) {
+                return true;
+            } else {
+                throw new Exception("Error When Trying To Update!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public static CurrentAccount getOne(String number) {
+    public  boolean updateStatus(accountStatus status, String number) {
 
-        Optional<CurrentAccount> currentAccountOptional = currentAccountDAOImp.findByNumber(number);
-
-        return currentAccountOptional.orElse(null);
-    }
-
-    public static void findAll() {
-        List<CurrentAccount> currentAccounts = currentAccountDAOImp.findAll().orElse(Collections.emptyList());
-
-        if (currentAccounts.isEmpty()) {
-            System.out.println("No Current Accounts Found!");
-        } else {
-            currentAccounts.forEach(System.out::println);
+        try {
+            if(currentAccountDAOImp.updateStatus(status, number)) {
+                return true;
+            } else {
+                throw new Exception("Error When Trying To Update Status!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public static void deposit(double balance, String number) {
-        if(currentAccountDAOImp.deposit(balance, number)) {
-            System.out.println("Balance Updated With Success!");
-        } else {
-            System.out.println("Error!");
+    public  boolean deposit(double balance, String number) {
+
+        try {
+            if(currentAccountDAOImp.deposit(balance, number)) {
+                return true;
+            } else {
+                throw new Exception("Error When Trying To Deposit!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+
     }
 
-    public static void withdraw(double balance, String number) {
-        if(currentAccountDAOImp.withdraw(balance, number)) {
-            System.out.println("Balance Updated With Success!");
-        } else {
-            System.out.println("Error!");
+    public  boolean withdraw(double balance, String number) {
+
+        try {
+            if(currentAccountDAOImp.withdraw(balance, number)) {
+                return true;
+            } else {
+                throw new Exception("Error When Trying To Withdraw!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+
     }
 
 }

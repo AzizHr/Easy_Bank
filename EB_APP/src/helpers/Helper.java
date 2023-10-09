@@ -1,5 +1,7 @@
 package helpers;
 
+import controllers.*;
+import daoImplementaion.*;
 import entities.*;
 import enums.accountStatus;
 import enums.paymentType;
@@ -12,6 +14,25 @@ import java.util.Scanner;
 public class Helper {
 
     private static final Scanner scanner = new Scanner(System.in);
+    private static final ClientDAOImp clientDAOImp = new ClientDAOImp();
+    private static final ClientService clientService = new ClientService(clientDAOImp);
+    private static final ClientController clientController = new ClientController(clientService);
+    private static final EmployeeDAOImp employeeDAOImp = new EmployeeDAOImp();
+    private static final AgencyDAOImp agencyDAOImp = new AgencyDAOImp();
+    private static final RecruitmentHistoryDAOImp recruitmentHistoryDAOImp = new RecruitmentHistoryDAOImp();
+    private static final EmployeeService employeeService = new EmployeeService(employeeDAOImp);
+    private static final AgencyService agencyService = new AgencyService(agencyDAOImp);
+    private static final RecruitmentHistoryService recruitmentHistoryService = new RecruitmentHistoryService(recruitmentHistoryDAOImp);
+    private static final CurrentAccountDAOImp currentAccountDAOImp = new CurrentAccountDAOImp();
+    private static final CurrentAccountService currentAccountService = new CurrentAccountService(currentAccountDAOImp);
+    private static final CurrentAccountController currentAccountController = new CurrentAccountController(currentAccountService, agencyService, employeeService, clientService);
+    private static final SavingAccountDAOImp savingAccountDAOImp = new SavingAccountDAOImp();
+    private static final SavingAccountService savingAccountService = new SavingAccountService(savingAccountDAOImp);
+    private static final SavingAccountController savingAccountController = new SavingAccountController(savingAccountService, agencyService, employeeService, clientService);
+    private static final EmployeeController employeeController = new EmployeeController(employeeService, agencyService, recruitmentHistoryService);
+    private static final OperationDAOImp operationDAOImp = new OperationDAOImp();
+    private static final OperationService operationService = new OperationService(operationDAOImp);
+    private static final OperationController operationController = new OperationController(operationService, employeeService, currentAccountService, savingAccountService);
 
     public static void call() {
 
@@ -32,73 +53,28 @@ public class Helper {
                         int employeeChoice = scanner.nextInt();
                         switch (employeeChoice) {
                             case 1:
-                                Employee employee = new Employee();
-                                String code;
-                                do {
-                                    System.out.print("Enter The Employee Code -> ");
-                                    code = scanner.next();
-                                    employee.setCode(code);
-                                }while (!Validator.isString(code));
-                                System.out.print("Enter The Employee First Name -> ");
-                                String firstName = scanner.next();
-                                employee.setFirstName(firstName);
-                                System.out.print("Enter The Employee Last Name -> ");
-                                String lastName = scanner.next();
-                                employee.setLastName(lastName);
-                                LocalDate birthDate = LocalDate.of(2001, 2, 2);
-                                employee.setBirthDate(birthDate);
-                                System.out.print("Enter The Employee Phone Number -> ");
-                                String phoneNumber = scanner.next();
-                                employee.setPhoneNumber(phoneNumber);
-                                System.out.print("Enter The Employee Email -> ");
-                                String email = scanner.next();
-                                employee.setEmail(email);
-                                LocalDate recruitedAt = LocalDate.of(2024, 2, 2);
-                                employee.setRecruitedAt(recruitedAt);
-                                EmployeeService.save(employee);
+                                employeeController.save();
                                 break;
                             case 2:
-                                EmployeeService.findAll();
+                                employeeController.findAll();
                                 break;
                             case 3:
-                                System.out.print("Enter The Code Of The Employee You're Looking For -> ");
-                                String empCode = scanner.next();
-                                EmployeeService.findByCode(empCode);
+                                employeeController.findByCode();
                                 break;
                             case 4:
-                                System.out.print("Enter The Code Of The Employee You Wanna Update -> ");
-                                String updateEmpCode = scanner.next();
-                                EmployeeService.findByCode(updateEmpCode);
-                                System.out.println("Enter The New Information");
-                                Employee employeeToUpdate = new Employee();
-                                System.out.print("Enter The Employee First Name -> ");
-                                String firstNameU = scanner.next();
-                                employeeToUpdate.setFirstName(firstNameU);
-                                System.out.print("Enter The Employee Last Name -> ");
-                                String lastNameU = scanner.next();
-                                employeeToUpdate.setLastName(lastNameU);
-                                LocalDate birthDateU = LocalDate.of(2001, 2, 2);
-                                employeeToUpdate.setBirthDate(birthDateU);
-                                System.out.print("Enter The Employee Phone Number -> ");
-                                String phoneNumberU = scanner.next();
-                                employeeToUpdate.setPhoneNumber(phoneNumberU);
-                                System.out.print("Enter The Employee Email -> ");
-                                String emailU = scanner.next();
-                                employeeToUpdate.setEmail(emailU);
-                                LocalDate recruitedAtU = LocalDate.of(2024, 2, 2);
-                                employeeToUpdate.setRecruitedAt(recruitedAtU);
-                                employeeToUpdate.setCode(updateEmpCode);
-                                EmployeeService.update(employeeToUpdate);
+                                employeeController.update();
                                 break;
                             case 5:
-                                System.out.print("Enter The Phone Number Of The Employee You're Looking For -> ");
-                                String empPhoneNumber = scanner.next();
-                                EmployeeService.findByPhoneNumber(empPhoneNumber);
+                                employeeController.findByPhoneNumber();
                                 break;
                             case 6:
-                                System.out.print("Enter The Code Of The Employee You Wanna Delete-> ");
-                                String empCodeToDelete = scanner.next();
-                                EmployeeService.delete(empCodeToDelete);
+                                employeeController.delete();
+                                break;
+                            case 7:
+                                employeeController.assignToAnAgency();
+                                break;
+                            case 8:
+                                employeeController.assignToAnotherAgency();
                                 break;
                             default:
                                 System.out.println("Not A Valid Option!");
@@ -116,66 +92,22 @@ public class Helper {
                         int clientChoice = scanner.nextInt();
                         switch (clientChoice) {
                             case 1:
-                                Client client = new Client();
-                                System.out.print("Enter The Client Code -> ");
-                                String code = scanner.next();
-                                client.setCode(code);
-                                System.out.print("Enter The Client First Name -> ");
-                                String firstName = scanner.next();
-                                client.setFirstName(firstName);
-                                System.out.print("Enter The Client Last Name -> ");
-                                String lastName = scanner.next();
-                                client.setLastName(lastName);
-                                LocalDate birthDate = LocalDate.of(2001, 2, 2);
-                                client.setBirthDate(birthDate);
-                                System.out.print("Enter The Client Phone Number -> ");
-                                String phoneNumber = scanner.next();
-                                client.setPhoneNumber(phoneNumber);
-                                System.out.print("Enter The Client Adress -> ");
-                                String adress = scanner.next();
-                                client.setAdress(adress);
-                                ClientService.save(client);
+                                clientController.save();
                                 break;
                             case 2:
-                                ClientService.findAll();
+                                clientController.findAll();
                                 break;
                             case 3:
-                                System.out.print("Enter The Code Of The Client You're Looking For -> ");
-                                String clientCode = scanner.next();
-                                ClientService.findByCode(clientCode);
+                                clientController.findByCode();
                                 break;
                             case 4:
-                                System.out.print("Enter The Code Of The Client You Wanna Update -> ");
-                                String updateClientCode = scanner.next();
-                                ClientService.findByCode(updateClientCode);
-                                System.out.println("Enter The New Information");
-                                Client clientToUpdate = new Client();
-                                System.out.print("Enter The Client First Name -> ");
-                                String firstNameU = scanner.next();
-                                clientToUpdate.setFirstName(firstNameU);
-                                System.out.print("Enter The Client Last Name -> ");
-                                String lastNameU = scanner.next();
-                                clientToUpdate.setLastName(lastNameU);
-                                LocalDate birthDateU = LocalDate.of(2001, 2, 2);
-                                clientToUpdate.setBirthDate(birthDateU);
-                                System.out.print("Enter The Client Phone Number -> ");
-                                String phoneNumberU = scanner.next();
-                                clientToUpdate.setPhoneNumber(phoneNumberU);
-                                System.out.print("Enter The Client Address -> ");
-                                String adressU = scanner.next();
-                                clientToUpdate.setAdress(adressU);
-                                clientToUpdate.setCode(updateClientCode);
-                                ClientService.update(clientToUpdate);
+                                clientController.update();
                                 break;
                             case 5:
-                                System.out.print("Enter The Adress Of The Client You're Looking For -> ");
-                                String clientAdress = scanner.next();
-                                ClientService.findByAdress(clientAdress);
+                                clientController.findByAdress();
                                 break;
                             case 6:
-                                System.out.print("Enter The Code Of The Client You Wanna Delete -> ");
-                                String clientCodeToDelete = scanner.next();
-                                ClientService.delete(clientCodeToDelete);
+                                clientController.delete();
                                 break;
                             default:
                                 System.out.println("Not A Valid Option!");
@@ -199,83 +131,25 @@ public class Helper {
                                 System.out.println("-> ");
                                 switch (currentAccountChoice) {
                                     case 1:
-                                        System.out.println("Enter The Employee Code Who Will Create This Account -> ");
-                                        String createdBy = scanner.next();
-                                        Employee emp = EmployeeService.getOne(createdBy);
-                                        System.out.println("Enter The Client Code Who Will Own This Account -> ");
-                                        String createdFor = scanner.next();
-                                        Client cli = ClientService.getOne(createdFor);
-                                        System.out.println("Now Enter The Current Account Information");
-                                        CurrentAccount currentAccount = new CurrentAccount();
-                                        System.out.println("Enter The Current Account Number -> ");
-                                        String number = scanner.next();
-                                        currentAccount.setNumber(number);
-                                        System.out.println("Enter The Current Account Balance -> ");
-                                        double balance = scanner.nextDouble();
-                                        currentAccount.setBalance(balance);
-                                        LocalDate createdAt = LocalDate.of(2022, 2, 3);
-                                        currentAccount.setCreatedAt(createdAt);
-                                        System.out.println("Enter The Current Account Overdraft -> ");
-                                        double overdraft = scanner.nextDouble();
-                                        currentAccount.setOverdraft(overdraft);
-                                        currentAccount.setClient(cli);
-                                        currentAccount.setEmployee(emp);
-                                        CurrentAccountService.save(currentAccount);
+                                        currentAccountController.save();
                                         break;
                                     case 2:
-                                        CurrentAccountService.findAll();
+                                        currentAccountController.findAll();
                                         break;
                                     case 3:
-                                        System.out.print("Enter The Client Code -> ");
-                                        String cliCode = scanner.next();
-                                        CurrentAccountService.findByClient(cliCode);
+                                        currentAccountController.findByClient();
                                         break;
                                     case 4:
-                                        CurrentAccount caToUpdate = new CurrentAccount();
-                                        System.out.print("Enter The Number Of The Current Account You Wanna Update -> ");
-                                        String caNumber = scanner.next();
-                                        CurrentAccountService.findByNumber(caNumber);
-                                        System.out.println("Enter The New Information");
-                                        System.out.println("Enter The Current Account Balance -> ");
-                                        double caBalance = scanner.nextDouble();
-                                        caToUpdate.setBalance(caBalance);
-                                        System.out.println("Enter The Current Account Overdraft -> ");
-                                        double caOverdraft= scanner.nextDouble();
-                                        caToUpdate.setOverdraft(caOverdraft);
-                                        caToUpdate.setNumber(caNumber);
-                                        CurrentAccountService.update(caToUpdate);
+                                        currentAccountController.update();
                                         break;
                                     case 5:
                                         // TO DO
                                         break;
                                     case 6:
-                                        System.out.print("Enter The Number Of The Current Account You Wanna Delete -> ");
-                                        String caNumberToDel = scanner.next();
-                                        CurrentAccountService.delete(caNumberToDel);
+                                        currentAccountController.delete();
                                         break;
                                     case 7:
-                                        System.out.print("Enter The Number Of The Current Account You Wanna Update -> ");
-                                        String caNumberToUpSts = scanner.next();
-                                        CurrentAccountService.findByNumber(caNumberToUpSts);
-                                        System.out.println("Choose The Status");
-                                        System.out.println("1- Active");
-                                        System.out.println("2- Frozen");
-                                        System.out.println("3- Closed");
-                                        System.out.print("-> ");
-                                        int statusChoice = scanner.nextInt();
-                                        switch (statusChoice) {
-                                            case 1:
-                                                CurrentAccountService.updateStatus(accountStatus.Active, caNumberToUpSts);
-                                                break;
-                                            case 2:
-                                                CurrentAccountService.updateStatus(accountStatus.Frozen, caNumberToUpSts);
-                                                break;
-                                            case 3:
-                                                CurrentAccountService.updateStatus(accountStatus.Closed, caNumberToUpSts);
-                                                break;
-                                            default:
-                                                System.out.println("Invalid Option!");
-                                        }
+                                        currentAccountController.updateStatus();
                                         break;
                                     default:
                                         System.out.println("Invalid Option");
@@ -293,83 +167,25 @@ public class Helper {
                                 System.out.println("-> ");
                                 switch (savingAccountChoice) {
                                     case 1:
-                                        System.out.println("Enter The Employee Code Who Will Create This Account -> ");
-                                        String createdBy = scanner.next();
-                                        Employee emp = EmployeeService.getOne(createdBy);
-                                        System.out.println("Enter The Client Code Who Will Own This Account -> ");
-                                        String createdFor = scanner.next();
-                                        Client cli = ClientService.getOne(createdFor);
-                                        System.out.println("Now Enter The Saving Account Information");
-                                        SavingAccount savingAccount = new SavingAccount();
-                                        System.out.println("Enter The Saving Account Number -> ");
-                                        String number = scanner.next();
-                                        savingAccount.setNumber(number);
-                                        System.out.println("Enter The Saving Account Balance -> ");
-                                        double balance = scanner.nextDouble();
-                                        savingAccount.setBalance(balance);
-                                        LocalDate createdAt = LocalDate.of(2022, 2, 3);
-                                        savingAccount.setCreatedAt(createdAt);
-                                        System.out.println("Enter The Saving Account Interest -> ");
-                                        double overdraft = scanner.nextDouble();
-                                        savingAccount.setInterest(overdraft);
-                                        savingAccount.setClient(cli);
-                                        savingAccount.setEmployee(emp);
-                                        SavingAccountService.save(savingAccount);
+                                        savingAccountController.save();
                                         break;
                                     case 2:
-                                        SavingAccountService.findAll();
+                                        savingAccountController.findAll();
                                         break;
                                     case 3:
-                                        System.out.print("Enter The Client Code -> ");
-                                        String cliCode = scanner.next();
-                                        SavingAccountService.findByClient(cliCode);
+                                        savingAccountController.findByClient();
                                         break;
                                     case 4:
-                                        SavingAccount saToUpdate = new SavingAccount();
-                                        System.out.print("Enter The Number Of The Saving Account You Wanna Update -> ");
-                                        String saNumber = scanner.next();
-                                        SavingAccountService.findByNumber(saNumber);
-                                        System.out.println("Enter The New Information");
-                                        System.out.println("Enter The Saving Account Balance -> ");
-                                        double saBalance = scanner.nextDouble();
-                                        saToUpdate.setBalance(saBalance);
-                                        System.out.println("Enter The Saving Account Interest -> ");
-                                        double saOverdraft= scanner.nextDouble();
-                                        saToUpdate.setInterest(saOverdraft);
-                                        saToUpdate.setNumber(saNumber);
-                                        SavingAccountService.update(saToUpdate);
+                                        savingAccountController.update();
                                         break;
                                     case 5:
                                         // TO DO
                                         break;
                                     case 6:
-                                        System.out.print("Enter The Number Of The Saving Account You Wanna Delete -> ");
-                                        String saNumberToDel = scanner.next();
-                                        SavingAccountService.delete(saNumberToDel);
+                                        savingAccountController.delete();
                                         break;
                                     case 7:
-                                        System.out.print("Enter The Number Of The Saving Account You Wanna Delete -> ");
-                                        String saNumberToUpSts = scanner.next();
-                                        SavingAccountService.findByNumber(saNumberToUpSts);
-                                        System.out.println("Choose The Status");
-                                        System.out.println("1- Active");
-                                        System.out.println("2- Frozen");
-                                        System.out.println("3- Closed");
-                                        System.out.print("-> ");
-                                        int statusChoice = scanner.nextInt();
-                                        switch (statusChoice) {
-                                            case 1:
-                                                SavingAccountService.updateStatus(accountStatus.Active, saNumberToUpSts);
-                                                break;
-                                            case 2:
-                                                SavingAccountService.updateStatus(accountStatus.Frozen, saNumberToUpSts);
-                                                break;
-                                            case 3:
-                                                SavingAccountService.updateStatus(accountStatus.Closed, saNumberToUpSts);
-                                                break;
-                                            default:
-                                                System.out.println("Invalid Option!");
-                                        }
+                                        savingAccountController.updateStatus();
                                         break;
                                     default:
                                         System.out.println("Invalid Option");
@@ -397,90 +213,20 @@ public class Helper {
                                 int option = scanner.nextInt();
                                 switch (option) {
                                     case 1:
-                                        System.out.print("Enter The Employee Code Who Will Do This Operation -> ");
-                                        String empCode = scanner.next();
-                                        EmployeeService.getOne(empCode);
-                                        System.out.print("Enter The Current Account Number -> ");
-                                        String caNumber = scanner.next();
-                                        CurrentAccountService.getOne(caNumber);
-                                        Operation operation = new Operation();
-                                        System.out.print("Enter The Operation Number -> ");
-                                        String number = scanner.next();
-                                        operation.setNumber(number);
-                                        LocalDate createdAt = LocalDate.now();
-                                        operation.setCreatedAt(createdAt);
-                                        System.out.print("Enter The Price -> ");
-                                        double price = scanner.nextDouble();
-                                        operation.setPrice(price);
-                                        System.out.println("Choose The Payment type");
-                                        System.out.println("1- Deposit");
-                                        System.out.println("2- Withdrawal");
-                                        System.out.print("-> ");
-                                        int paymentTypeChoice = scanner.nextInt();
-                                        switch (paymentTypeChoice) {
-                                            case 1:
-                                                operation.setPayment(paymentType.Deposit);
-                                                CurrentAccountService.deposit(price, caNumber);
-                                                break;
-                                            case 2:
-                                                operation.setPayment(paymentType.Withdrawal);
-                                                CurrentAccountService.withdraw(price, caNumber);
-                                                break;
-                                            default:
-                                        }
-                                        operation.setEmployee(EmployeeService.getOne(empCode));
-                                        operation.setAccount(CurrentAccountService.getOne(caNumber));
-                                        OperationService.saveForCA(operation);
+                                        operationController.saveForCurrentAccount();
                                         break;
                                     case 2:
-                                        System.out.print("Enter The Employee Code Who Will Do This Operation -> ");
-                                        String eCode = scanner.next();
-                                        EmployeeService.getOne(eCode);
-                                        System.out.print("Enter The Saving Account Number -> ");
-                                        String saNumber = scanner.next();
-                                        SavingAccountService.getOne(saNumber);
-                                        Operation operation1 = new Operation();
-                                        System.out.print("Enter The Operation Number -> ");
-                                        String number1 = scanner.next();
-                                        operation1.setNumber(number1);
-                                        LocalDate createdAt1 = LocalDate.now();
-                                        operation1.setCreatedAt(createdAt1);
-                                        System.out.print("Enter The Price -> ");
-                                        double price1 = scanner.nextDouble();
-                                        operation1.setPrice(price1);
-                                        System.out.println("Choose The Payment type");
-                                        System.out.println("1- Deposit");
-                                        System.out.println("2- Withdrawal");
-                                        System.out.print("-> ");
-                                        int paymentTypeChoice1 = scanner.nextInt();
-                                        switch (paymentTypeChoice1) {
-                                            case 1:
-                                                operation1.setPayment(paymentType.Deposit);
-                                                SavingAccountService.deposit(price1, saNumber);
-                                                break;
-                                            case 2:
-                                                operation1.setPayment(paymentType.Withdrawal);
-                                                SavingAccountService.withdraw(price1, saNumber);
-                                                break;
-                                            default:
-                                        }
-                                        operation1.setEmployee(EmployeeService.getOne(eCode));
-                                        operation1.setAccount(SavingAccountService.getOne(saNumber));
-                                        OperationService.saveForSA(operation1);
+                                        operationController.saveForSavingAccount();
                                         break;
                                     default:
                                         System.out.println("Invalid Choice!");
                                 }
                                 break;
                             case 2:
-                                System.out.print("Enter The Number Of The Operation You Wanna Delete -> ");
-                                String opNumberToDel = scanner.next();
-                                OperationService.delete(opNumberToDel);
+                                operationController.delete();
                                 break;
                             case 3:
-                                System.out.print("Enter The Number Of The Operation You're Looking For -> ");
-                                String opNumber = scanner.next();
-                                OperationService.findByNumber(opNumber);
+                                operationController.findByNumber();
                         }
                         System.out.print("Press [1] To Return To The Operation Menu -> ");
                         repeatOperationMenu = scanner.nextInt();

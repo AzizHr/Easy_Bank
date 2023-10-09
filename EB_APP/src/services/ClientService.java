@@ -8,81 +8,99 @@ import java.util.Optional;
 
 public class ClientService {
 
-    private static ClientDAOImp clientDAOImp;
+    private  ClientDAOImp clientDAOImp;
 
     public ClientService(ClientDAOImp instance) {
         clientDAOImp = instance;
     }
 
-    public static void save(Client client) {
+    public  Client save(Client client) {
 
-        System.out.println("New Client Added With Success!");
-        clientDAOImp.save(client).ifPresent(System.out::println);
+        try {
+            Optional<Client> clientOptional = clientDAOImp.save(client);
 
-    }
-
-    public static void delete(String code) {
-
-        if(clientDAOImp.delete(code)) {
-            System.out.println("Deleted With Success!");
-        } else {
-            System.out.println("Not Found!");
+            if (clientOptional.isPresent()) {
+                return clientOptional.get();
+            } else {
+                throw new Exception("Error When Trying To Insert!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
     }
 
-    public static void findAll() {
-        List<Client> clients = clientDAOImp.findAll().orElse(Collections.emptyList());
+    public  boolean delete(String code) {
 
-        if (clients.isEmpty()) {
-            System.out.println("No Clients Found!");
-        } else {
-            clients.forEach(System.out::println);
+        try {
+            if(clientDAOImp.delete(code)) {
+                return true;
+            } else {
+                throw new Exception("Error When Trying To Delete!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public static void findByCode(String code) {
+    public  List<Client> findAll() {
 
-        Optional<Client> clientOptional = clientDAOImp.findByCode(code);
+        try {
+            List<Client> clients = clientDAOImp.findAll().orElse(Collections.emptyList());
 
-        if (clientOptional.isPresent()) {
-            Client client = clientOptional.get();
-            System.out.println("Employee Found : ");
-            System.out.println(client);
-        } else {
-            System.out.println("No Client With This Code Found!");
+            if (clients.isEmpty()) {
+                throw new Exception("No Clients Found!");
+            } else {
+                return clients;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public static Client getOne(String code) {
+    public  Client findByCode(String code) {
 
-        Optional<Client> clientOptional = clientDAOImp.findByCode(code);
+        try {
 
-        return clientOptional.orElse(null);
+            Optional<Client> clientOptional = clientDAOImp.findByCode(code);
+
+            if (clientOptional.isPresent()) {
+                return clientOptional.get();
+            } else {
+                throw new Exception("No Client With This Code Found!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public static void findByAdress(String adress) {
+    public  Client findByAdress(String adress) {
 
-        Optional<Client> clientOptional = clientDAOImp.findByAdress(adress);
+        try {
 
-        if (clientOptional.isPresent()) {
-            Client client = clientOptional.get();
-            System.out.println("Client Found : ");
-            System.out.println(client);
-        } else {
-            System.out.println("No Client With This Adress Found!");
+            Optional<Client> clientOptional = clientDAOImp.findByAdress(adress);
+
+            if (clientOptional.isPresent()) {
+                return clientOptional.get();
+            } else {
+                throw new Exception("No Client With This Adress Found!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-
     }
 
-    public static void update(Client client) {
+    public  boolean update(Client client) {
 
-        if(clientDAOImp.update(client)) {
-            System.out.println("Updated With Success!");
-        } else {
-            System.out.println("Error!");
+        try {
+            if(clientDAOImp.update(client)) {
+                return true;
+            } else {
+                throw new Exception("Error When Trying To Update!");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-
     }
 
 }
