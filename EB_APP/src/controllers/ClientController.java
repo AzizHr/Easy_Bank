@@ -34,7 +34,7 @@ public class ClientController {
         client.setPhoneNumber(phoneNumber);
         System.out.print("Enter The Client Adress -> ");
         String adress = scanner.next();
-        client.setAdress(adress);
+        client.setAddress(adress);
         System.out.println(clientService.save(client));
 
     }
@@ -78,7 +78,6 @@ public class ClientController {
     }
 
     public void findByAddress() {
-
         System.out.print("Enter The Address Of The Client You're Looking For -> ");
         String clientAddress = scanner.next();
         System.out.println(clientService.findByAddress(clientAddress));
