@@ -148,13 +148,13 @@ public class ClientDAOImp implements IClientDAO<Client> {
      * @return
      */
     @Override
-    public Optional<Client> findByAdress(String adress) {
+    public Optional<Client> findByAddress(String address) {
         Client client = new Client();
         String sql = "SELECT * FROM client WHERE address = ?";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, adress);
+            preparedStatement.setString(1, address);
             ResultSet rs = preparedStatement.executeQuery();
             if(rs.next()) {
                 client.setCode(rs.getString(1));
@@ -162,7 +162,7 @@ public class ClientDAOImp implements IClientDAO<Client> {
                 client.setLastName(rs.getString(3));
                 client.setBirthDate(rs.getDate(4).toLocalDate());
                 client.setPhoneNumber(rs.getString(5));
-                client.setAdress(rs.getString(6));
+                client.setAddress(rs.getString(6));
             } else {
                 return Optional.empty();
             }

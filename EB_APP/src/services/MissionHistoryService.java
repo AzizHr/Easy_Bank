@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class MissionHistoryService {
 
-    private  MissionHistoryDAOImp missionHistoryDAOImp;
+    private final MissionHistoryDAOImp missionHistoryDAOImp;
 
     public MissionHistoryService(MissionHistoryDAOImp instance) {
         missionHistoryDAOImp = instance;
@@ -17,46 +17,18 @@ public class MissionHistoryService {
 
     public  MissionHistory save(MissionHistory missionHistory) {
 
-        try {
-            Optional<MissionHistory> missionHistoryOptional = missionHistoryDAOImp.save(missionHistory);
-
-            if (missionHistoryOptional.isPresent()) {
-                return missionHistoryOptional.get();
-            } else {
-                throw new Exception("Error When Trying To Insert!");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return missionHistoryDAOImp.save(missionHistory).orElse(null);
 
     }
 
     public  boolean delete(String employeeCode, String missionCode, LocalDate startedAt) {
 
-        try {
-            if(missionHistoryDAOImp.delete(employeeCode, missionCode, startedAt)) {
-                return true;
-            } else {
-                throw new Exception("Error When Trying To Delete!");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return missionHistoryDAOImp.delete(employeeCode, missionCode, startedAt);
     }
 
     public  List<MissionHistory> findAll() {
 
-        try {
-            List<MissionHistory> missionHistories = missionHistoryDAOImp.findAll().orElse(Collections.emptyList());
-
-            if (missionHistories.isEmpty()) {
-                throw new Exception("No Mission Histories Found!");
-            } else {
-                return missionHistories;
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return missionHistoryDAOImp.findAll().orElse(Collections.emptyList());
 
     }
 

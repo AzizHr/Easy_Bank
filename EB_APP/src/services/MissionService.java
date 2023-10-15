@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class MissionService {
 
-    private  MissionDAOImp missionDAOImp;
+    private final MissionDAOImp missionDAOImp;
 
     public MissionService(MissionDAOImp instance) {
         missionDAOImp= instance;
@@ -16,61 +16,22 @@ public class MissionService {
 
     public  Mission findByCode(String code) {
 
-        try {
-
-            Optional<Mission> missionOptional = missionDAOImp.findByCode(code);
-
-            if (missionOptional.isPresent()) {
-                return missionOptional.get();
-            } else {
-                throw new Exception("No Mission With This Code Found!");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return missionDAOImp.findByCode(code).orElse(null);
     }
 
     public  Mission save(Mission mission) {
 
-
-        try {
-            Optional<Mission> missionOptional = missionDAOImp.save(mission);
-
-            if (missionOptional.isPresent()) {
-                return missionOptional.get();
-            } else {
-                throw new Exception("Error When Trying To Insert!");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return missionDAOImp.save(mission).orElse(null);
 
     }
 
     public  boolean delete(String code) {
 
-        try {
-            if(missionDAOImp.delete(code)) {
-                return true;
-            } else {
-                throw new Exception("Error When Trying To Delete!");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return missionDAOImp.delete(code);
     }
 
     public  List<Mission> findAll() {
-        try {
-            List<Mission> missions = missionDAOImp.findAll().orElse(Collections.emptyList());
 
-            if (missions.isEmpty()) {
-                throw new Exception("No Missions Found!");
-            } else {
-                return missions;
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return missionDAOImp.findAll().orElse(Collections.emptyList());
     }
 }

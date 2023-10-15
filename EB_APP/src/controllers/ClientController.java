@@ -77,11 +77,11 @@ public class ClientController {
         }
     }
 
-    public void findByAdress() {
+    public void findByAddress() {
 
-        System.out.print("Enter The Adress Of The Client You're Looking For -> ");
-        String clientAdress = scanner.next();
-        System.out.println(clientService.findByAdress(clientAdress));
+        System.out.print("Enter The Address Of The Client You're Looking For -> ");
+        String clientAddress = scanner.next();
+        System.out.println(clientService.findByAddress(clientAddress));
 
     }
 

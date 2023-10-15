@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class EmployeeService {
 
-    private  EmployeeDAOImp employeeDAOImp;
+    private final EmployeeDAOImp employeeDAOImp;
 
     public EmployeeService(EmployeeDAOImp instance) {
         employeeDAOImp = instance;
@@ -16,91 +16,33 @@ public class EmployeeService {
 
     public  Employee save(Employee employee) {
 
-        try {
-            Optional<Employee> employeeOptional = employeeDAOImp.save(employee);
-
-            if (employeeOptional.isPresent()) {
-                return employeeOptional.get();
-            } else {
-                throw new Exception("Error When Trying To Insert!");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return employeeDAOImp.save(employee).orElse(null);
 
     }
 
     public  boolean delete(String code) {
 
-        try {
-            if(employeeDAOImp.delete(code)) {
-                return true;
-            } else {
-                throw new Exception("Error When Trying To Delete!");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return employeeDAOImp.delete(code);
     }
 
     public  List<Employee> findAll() {
 
-        try {
-            List<Employee> employees = employeeDAOImp.findAll().orElse(Collections.emptyList());
-
-            if (employees.isEmpty()) {
-                throw new Exception("No Employees Found!");
-            } else {
-                return employees;
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return employeeDAOImp.findAll().orElse(Collections.emptyList());
     }
 
     public  Employee findByCode(String code) {
 
-        try {
-
-            Optional<Employee> employeeOptional = employeeDAOImp.findByCode(code);
-
-            if (employeeOptional.isPresent()) {
-                return employeeOptional.get();
-            } else {
-                throw new Exception("No Employee With This Code Found!");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return employeeDAOImp.findByCode(code).orElse(null);
     }
 
     public  Employee findByPhoneNumber(String phoneNumber) {
 
-        try {
-
-            Optional<Employee> employeeOptional = employeeDAOImp.findByPhoneNumber(phoneNumber);
-
-            if (employeeOptional.isPresent()) {
-                return employeeOptional.get();
-            } else {
-                throw new Exception("No Employee With This Adress Found!");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return employeeDAOImp.findByPhoneNumber(phoneNumber).orElse(null);
     }
 
     public  boolean update(Employee employee) {
 
-        try {
-            if(employeeDAOImp.update(employee)) {
-                return true;
-            } else {
-                throw new Exception("Error When Trying To Update!");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return employeeDAOImp.update(employee);
     }
 
 }

@@ -15,63 +15,24 @@ public class OperationService {
 
     public  Operation saveForCA(Operation operation) {
 
-        try {
-            Optional<Operation> operationOptional = operationDAOImp.saveForCA(operation);
-
-            if (operationOptional.isPresent()) {
-                return operationOptional.get();
-            } else {
-                throw new Exception("Error When Trying To Insert!");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return operationDAOImp.saveForCA(operation).orElse(null);
 
     }
 
     public  Operation saveForSA(Operation operation) {
 
-        try {
-            Optional<Operation> operationOptional = operationDAOImp.saveForSA(operation);
-
-            if (operationOptional.isPresent()) {
-                return operationOptional.get();
-            } else {
-                throw new Exception("Error When Trying To Insert!");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return operationDAOImp.saveForSA(operation).orElse(null);
 
     }
 
     public  boolean delete(String number) {
 
-        try {
-            if(operationDAOImp.delete(number)) {
-                return true;
-            } else {
-                throw new Exception("Error When Trying To Delete!");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return operationDAOImp.delete(number);
     }
 
     public  Operation findByNumber(String number) {
 
-        try {
-
-            Optional<Operation> operationOptional = operationDAOImp.findByNumber(number);
-
-            if (operationOptional.isPresent()) {
-                return operationOptional.get();
-            } else {
-                throw new Exception("No Operation With This Number Found!");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return operationDAOImp.findByNumber(number).orElse(null);
 
     }
 
