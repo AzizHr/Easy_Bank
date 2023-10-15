@@ -70,7 +70,7 @@ public class ClientController {
             client.setPhoneNumber(phoneNumber);
             System.out.print("Enter The Client Address -> ");
             String adress = scanner.next();
-            client.setAdress(adress);
+            client.setAddress(adress);
             client.setCode(code);
             System.out.println(clientService.update(client));
 

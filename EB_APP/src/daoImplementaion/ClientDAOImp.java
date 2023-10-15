@@ -3,8 +3,6 @@ package daoImplementaion;
 import dao.IClientDAO;
 import database.Database;
 import entities.Client;
-import entities.Employee;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,7 +34,7 @@ public class ClientDAOImp implements IClientDAO<Client> {
                 client.setLastName(rs.getString(3));
                 client.setBirthDate(rs.getDate(4).toLocalDate());
                 client.setPhoneNumber(rs.getString(5));
-                client.setAdress(rs.getString(6));
+                client.setAddress(rs.getString(6));
             } else {
                 return Optional.empty();
             }
@@ -62,7 +60,7 @@ public class ClientDAOImp implements IClientDAO<Client> {
             preparedStatement.setString(3, client.getLastName());
             preparedStatement.setObject(4, client.getBirthDate());
             preparedStatement.setString(5, client.getPhoneNumber());
-            preparedStatement.setString(6, client.getAdress());
+            preparedStatement.setString(6, client.getAddress());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -105,7 +103,7 @@ public class ClientDAOImp implements IClientDAO<Client> {
             preparedStatement.setString(2, client.getLastName());
             preparedStatement.setObject(3, client.getBirthDate());
             preparedStatement.setString(4, client.getPhoneNumber());
-            preparedStatement.setString(5, client.getAdress());
+            preparedStatement.setString(5, client.getAddress());
             preparedStatement.setString(6, client.getCode());
             updated = preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -134,7 +132,7 @@ public class ClientDAOImp implements IClientDAO<Client> {
                 client.setLastName(rs.getString(3));
                 client.setBirthDate(rs.getDate(4).toLocalDate());
                 client.setPhoneNumber(rs.getString(5));
-                client.setAdress(rs.getString(6));
+                client.setAddress(rs.getString(6));
                 clients.add(client);
             }
         } catch (SQLException e) {
@@ -144,7 +142,7 @@ public class ClientDAOImp implements IClientDAO<Client> {
     }
 
     /**
-     * @param adress 
+     * @param address
      * @return
      */
     @Override
