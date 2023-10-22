@@ -14,6 +14,7 @@ import java.util.Optional;
 public class ClientDAOImp implements IClientDAO<Client> {
 
     private static final Connection connection = Database.getInstance().getConnection();
+    private static final EmployeeDAOImp employeeDAOImp = new EmployeeDAOImp();
 
     /**
      * @param code 
@@ -35,6 +36,7 @@ public class ClientDAOImp implements IClientDAO<Client> {
                 client.setBirthDate(rs.getDate(4).toLocalDate());
                 client.setPhoneNumber(rs.getString(5));
                 client.setAddress(rs.getString(6));
+                client.setEmployee(employeeDAOImp.findByCode(rs.getString(7)).get());
             } else {
                 return Optional.empty();
             }
@@ -51,7 +53,7 @@ public class ClientDAOImp implements IClientDAO<Client> {
     @Override
     public Optional<Client> save(Client client) {
 
-        String sql = "INSERT INTO client (code, first_name, last_name, birth_date, phone_number, address) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO client (code, first_name, last_name, birth_date, phone_number, address, employee_code) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -61,6 +63,7 @@ public class ClientDAOImp implements IClientDAO<Client> {
             preparedStatement.setObject(4, client.getBirthDate());
             preparedStatement.setString(5, client.getPhoneNumber());
             preparedStatement.setString(6, client.getAddress());
+            preparedStatement.setString(7, client.getEmployee().getCode());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -133,6 +136,7 @@ public class ClientDAOImp implements IClientDAO<Client> {
                 client.setBirthDate(rs.getDate(4).toLocalDate());
                 client.setPhoneNumber(rs.getString(5));
                 client.setAddress(rs.getString(6));
+                client.setEmployee(employeeDAOImp.findByCode(rs.getString(7)).get());
                 clients.add(client);
             }
         } catch (SQLException e) {
@@ -161,6 +165,7 @@ public class ClientDAOImp implements IClientDAO<Client> {
                 client.setBirthDate(rs.getDate(4).toLocalDate());
                 client.setPhoneNumber(rs.getString(5));
                 client.setAddress(rs.getString(6));
+                client.setEmployee(employeeDAOImp.findByCode(rs.getString(7)).get());
             } else {
                 return Optional.empty();
             }

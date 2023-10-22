@@ -7,8 +7,8 @@ public class AgencyMenu {
     private static final String FIND_AGENCY_BY_CODE = "Press [3] To Find An Agency By Code\n";
     private static final String UPDATE_AGENCY = "Press [4] To Update An Agency\n";
     private static final String FIND_AGENCY_BY_ADRESS = "Press [5] To Find An Agency By Adress\n";
-    private static final String FIND_AGENCY_BY_EMPLOYEE = "Press [5] To Find An Agency By Employee\n";
-    private static final String DELETE_AGENCY = "Press [6] To Delete An Agency\n";
+    private static final String FIND_AGENCY_BY_EMPLOYEE = "Press [6] To Find An Agency By Employee\n";
+    private static final String DELETE_AGENCY = "Press [7] To Delete An Agency\n";
 
     public static void show() {
         System.out.println("-----Agency Administration-----\n");

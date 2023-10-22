@@ -10,6 +10,7 @@ import lombok.*;
 public class Client extends Person {
 
     private String address;
+    private Employee employee;
     private List<Account> accounts;
 
     @Override

@@ -44,8 +44,6 @@ public class EmployeeController {
         System.out.print("Enter The Employee Email -> ");
         String email = scanner.next();
         employee.setEmail(email);
-        LocalDate recruitedAt = LocalDate.of(2024, 2, 2);
-        employee.setRecruitedAt(recruitedAt);
         System.out.println(employeeService.save(employee));
 
     }
@@ -81,8 +79,6 @@ public class EmployeeController {
             System.out.print("Enter The Employee Email -> ");
             String email = scanner.next();
             employee.setEmail(email);
-            LocalDate recruitedAt = LocalDate.of(2024, 2, 2);
-            employee.setRecruitedAt(recruitedAt);
             employee.setCode(code);
             employeeService.update(employee);
         }

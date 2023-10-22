@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class ClientService {
 
-    private  ClientDAOImp clientDAOImp;
+    private final ClientDAOImp clientDAOImp;
 
     public ClientService(ClientDAOImp instance) {
         clientDAOImp = instance;

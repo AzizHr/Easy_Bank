@@ -33,7 +33,6 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
                 employee.setBirthDate(rs.getDate(4).toLocalDate());
                 employee.setPhoneNumber(rs.getString(5));
                 employee.setEmail(rs.getString(6));
-                employee.setRecruitedAt(rs.getDate(7).toLocalDate());
             } else {
                 return Optional.empty();
             }
@@ -49,7 +48,7 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
      */
     @Override
     public Optional<Employee> save(Employee employee) {
-        String sql = "INSERT INTO employee (code, first_name, last_name, birth_date, phone_number, email, recruited_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO employee (code, first_name, last_name, birth_date, phone_number, email) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -59,7 +58,6 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
             preparedStatement.setObject(4, employee.getBirthDate());
             preparedStatement.setString(5, employee.getPhoneNumber());
             preparedStatement.setString(6, employee.getEmail());
-            preparedStatement.setObject(7, employee.getRecruitedAt());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -95,7 +93,7 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
 
         boolean updated = false;
 
-        String sql = "UPDATE employee SET first_name = ?, last_name = ?, birth_date = ?, phone_number = ?, email = ?, recruited_at = ? WHERE code = ?";
+        String sql = "UPDATE employee SET first_name = ?, last_name = ?, birth_date = ?, phone_number = ?, email = ? WHERE code = ?";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -104,8 +102,7 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
             preparedStatement.setObject(3, employee.getBirthDate());
             preparedStatement.setString(4, employee.getPhoneNumber());
             preparedStatement.setString(5, employee.getEmail());
-            preparedStatement.setObject(6, employee.getRecruitedAt());
-            preparedStatement.setString(7, employee.getCode());
+            preparedStatement.setString(6, employee.getCode());
             updated = preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -134,7 +131,6 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
                 employee.setBirthDate(rs.getDate(4).toLocalDate());
                 employee.setPhoneNumber(rs.getString(5));
                 employee.setEmail(rs.getString(6));
-                employee.setRecruitedAt(rs.getDate(7).toLocalDate());
                 employees.add(employee);
             }
         } catch (SQLException e) {
@@ -163,7 +159,6 @@ public class EmployeeDAOImp implements IEmployeeDAO<Employee> {
                 employee.setBirthDate(rs.getDate(4).toLocalDate());
                 employee.setPhoneNumber(rs.getString(5));
                 employee.setEmail(rs.getString(6));
-                employee.setRecruitedAt(rs.getDate(7).toLocalDate());
             } else {
                 return Optional.empty();
             }

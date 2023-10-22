@@ -27,14 +27,14 @@ public class CurrentAccountDAOImp implements ICurrentAccountDAO<CurrentAccount> 
     @Override
     public Optional<CurrentAccount> save(CurrentAccount currentAccount) {
 
-        String sql = "INSERT INTO current_account (number, balance, created_at, account_status, overdraft, agency_code, client_code, employee_code) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO current_account (number, balance, created_at, status, overdraft, agency_code, client_code, employee_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, currentAccount.getNumber());
             preparedStatement.setDouble(2, currentAccount.getBalance());
             preparedStatement.setObject(3, currentAccount.getCreatedAt());
-            preparedStatement.setObject(4, accountStatus.Active, Types.OTHER);
+            preparedStatement.setObject(4, accountStatus.ACTIVE, Types.OTHER);
             preparedStatement.setDouble(5, currentAccount.getOverdraft());
             preparedStatement.setString(6, currentAccount.getAgency().getCode());
             preparedStatement.setString(7, currentAccount.getClient().getCode());

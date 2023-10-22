@@ -16,91 +16,33 @@ public class AgencyService {
 
     public  Agency save(Agency agency) {
 
-        try {
-            Optional<Agency> agencyOptional = agencyDAOImp.save(agency);
-
-            if (agencyOptional.isPresent()) {
-                return agencyOptional.get();
-            } else {
-                throw new Exception("Error When Trying To Insert!");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return agencyDAOImp.save(agency).orElse(null);
 
     }
 
     public  boolean delete(String code) {
 
-        try {
-            if(agencyDAOImp.delete(code)) {
-                return true;
-            } else {
-                throw new Exception("Error When Trying To Delete!");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return agencyDAOImp.delete(code);
     }
 
     public  List<Agency> findAll() {
 
-        try {
-            List<Agency> agencies = agencyDAOImp.findAll().orElse(Collections.emptyList());
-
-            if (agencies.isEmpty()) {
-                throw new Exception("No Agencies Found!");
-            } else {
-                return agencies;
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return agencyDAOImp.findAll().orElse(Collections.emptyList());
     }
 
     public  Agency findByCode(String code) {
 
-        try {
-
-            Optional<Agency> agencyOptional = agencyDAOImp.findByCode(code);
-
-            if (agencyOptional.isPresent()) {
-                return agencyOptional.get();
-            } else {
-                throw new Exception("No Agency With This Code Found!");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return agencyDAOImp.findByCode(code).orElse(null);
     }
 
-    public  Agency findByAdress(String adress) {
+    public  Agency findByAddress(String address) {
 
-        try {
-
-            Optional<Agency> agencyOptional = agencyDAOImp.findByAdress(adress);
-
-            if (agencyOptional.isPresent()) {
-                return agencyOptional.get();
-            } else {
-                throw new Exception("No Agency With This Adress Found!");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return agencyDAOImp.findByAddress(address).orElse(null);
     }
 
     public  boolean update(Agency agency) {
 
-        try {
-            if(agencyDAOImp.update(agency)) {
-                return true;
-            } else {
-                throw new Exception("Error When Trying To Update!");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return agencyDAOImp.update(agency);
     }
 
 }

@@ -21,7 +21,7 @@ public class PaymentDAOImp implements IPaymentDAO<Payment> {
      */
     @Override
     public Optional<Payment> saveForCA(Payment payment) {
-        String sql = "INSERT INTO payment (number, created_at, price, payment, employee_code, source_current_account_number, destination_current_account_number) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO payment (number, created_at, price, payment, source_current_account_number, destination_current_account_number) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -29,8 +29,9 @@ public class PaymentDAOImp implements IPaymentDAO<Payment> {
             preparedStatement.setObject(2, payment.getCreatedAt());
             preparedStatement.setDouble(3, payment.getPrice());
             preparedStatement.setObject(4, payment.getPayment(), Types.OTHER);
-            preparedStatement.setString(5, payment.getEmployee().getCode());
-            preparedStatement.setString(6, payment.getAccount().getNumber());
+//            preparedStatement.setString(5, payment.getEmployee().getCode());
+            preparedStatement.setString(5, payment.getAccount().getNumber());
+            preparedStatement.setString(6, payment.getDestinationAccount().getNumber());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -44,7 +45,7 @@ public class PaymentDAOImp implements IPaymentDAO<Payment> {
      */
     @Override
     public Optional<Payment> saveForSA(Payment payment) {
-        String sql = "INSERT INTO operation (number, created_at, price, payment, employee_code, source_saving_account_number, destination_saving_account_number) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO operation (number, created_at, price, payment, source_saving_account_number, destination_saving_account_number) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -52,8 +53,9 @@ public class PaymentDAOImp implements IPaymentDAO<Payment> {
             preparedStatement.setObject(2, payment.getCreatedAt());
             preparedStatement.setDouble(3, payment.getPrice());
             preparedStatement.setObject(4, payment.getPayment(), Types.OTHER);
-            preparedStatement.setString(5, payment.getEmployee().getCode());
-            preparedStatement.setString(6, payment.getAccount().getNumber());
+//            preparedStatement.setString(5, payment.getEmployee().getCode());
+            preparedStatement.setString(5, payment.getAccount().getNumber());
+            preparedStatement.setString(6, payment.getDestinationAccount().getNumber());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -47,15 +47,16 @@ public class OperationController {
                 System.out.println("Choose The Payment type");
                 System.out.println("1- Deposit");
                 System.out.println("2- Withdrawal");
+                System.out.println("3- Payment");
                 System.out.print("-> ");
                 int paymentTypeChoice = scanner.nextInt();
                 switch (paymentTypeChoice) {
                     case 1:
-                        operation.setPayment(paymentType.Deposit);
+                        operation.setPayment(paymentType.DEPOSIT);
                         currentAccountService.deposit(price, currentAccountNumber);
                         break;
                     case 2:
-                        operation.setPayment(paymentType.Withdrawal);
+                        operation.setPayment(paymentType.WITHDRAWAL);
                         currentAccountService.withdraw(price, currentAccountNumber);
                         break;
                     default:
@@ -95,11 +96,11 @@ public class OperationController {
                 int paymentTypeChoice = scanner.nextInt();
                 switch (paymentTypeChoice) {
                     case 1:
-                        operation.setPayment(paymentType.Deposit);
+                        operation.setPayment(paymentType.DEPOSIT);
                         savingAccountService.deposit(price, savingAccountNumber);
                         break;
                     case 2:
-                        operation.setPayment(paymentType.Withdrawal);
+                        operation.setPayment(paymentType.WITHDRAWAL);
                         savingAccountService.withdraw(price, savingAccountNumber);
                         break;
                     default:

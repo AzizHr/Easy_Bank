@@ -11,7 +11,6 @@ import lombok.*;
 public class Employee extends Person {
 
     private String email;
-    private LocalDate recruitedAt;
     private List<Operation> operations;
     private List<MissionHistory> missionHistories;
 
@@ -19,7 +18,6 @@ public class Employee extends Person {
     public String toString() {
         return "Employee{" +
                 "email='" + email + '\'' +
-                ", recruitedAt=" + recruitedAt +
                 ", operations=" + operations +
                 ", missionHistories=" + missionHistories +
                 '}';

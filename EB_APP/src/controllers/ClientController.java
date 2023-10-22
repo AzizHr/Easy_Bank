@@ -1,7 +1,9 @@
 package controllers;
 
 import entities.Client;
+import entities.Employee;
 import services.ClientService;
+import services.EmployeeService;
 
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -9,10 +11,12 @@ import java.util.Scanner;
 public class ClientController {
 
     private final ClientService clientService;
+    private final EmployeeService employeeService;
     private static final Scanner scanner = new Scanner(System.in);
 
-    public ClientController(ClientService instance) {
-        clientService = instance;
+    public ClientController(ClientService instance1, EmployeeService instance2) {
+        clientService = instance1;
+        employeeService = instance2;
     }
 
     public void save() {
@@ -33,8 +37,12 @@ public class ClientController {
         String phoneNumber = scanner.next();
         client.setPhoneNumber(phoneNumber);
         System.out.print("Enter The Client Adress -> ");
-        String adress = scanner.next();
-        client.setAddress(adress);
+        String address = scanner.next();
+        client.setAddress(address);
+        System.out.print("Enter The Employee Code -> ");
+        String employeeCode = scanner.next();
+        Employee employee = employeeService.findByCode(employeeCode);
+        client.setEmployee(employee);
         System.out.println(clientService.save(client));
 
     }

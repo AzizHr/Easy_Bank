@@ -116,13 +116,13 @@ public class SavingAccountController {
             int statusChoice = scanner.nextInt();
             switch (statusChoice) {
                 case 1:
-                    savingAccountService.updateStatus(accountStatus.Active, number);
+                    savingAccountService.updateStatus(accountStatus.ACTIVE, number);
                     break;
                 case 2:
-                    savingAccountService.updateStatus(accountStatus.Frozen, number);
+                    savingAccountService.updateStatus(accountStatus.FROZEN, number);
                     break;
                 case 3:
-                    savingAccountService.updateStatus(accountStatus.Closed, number);
+                    savingAccountService.updateStatus(accountStatus.CLOSED, number);
                     break;
                 default:
                     System.out.println("Invalid Option!");

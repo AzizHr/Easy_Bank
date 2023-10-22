@@ -6,7 +6,6 @@ import entities.Simulation;
 import enums.demandStatus;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 public class DemandService {
 
@@ -18,75 +17,27 @@ public class DemandService {
 
     public  Simulation save(Demand demand) {
 
-        try {
-            Optional<Simulation> demandOptional = demandDAOImp.save(demand);
-
-            if (demandOptional.isPresent()) {
-                return demandOptional.get();
-            } else {
-                throw new Exception("Error When Trying To Insert!");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return demandDAOImp.save(demand).orElse(null);
 
     }
 
     public  boolean delete(String code) {
 
-        try {
-            if(demandDAOImp.delete(code)) {
-                return true;
-            } else {
-                throw new Exception("Error When Trying To Delete!");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return demandDAOImp.delete(code);
     }
 
     public  List<Simulation> findAll() {
 
-        try {
-            List<Simulation> demands = demandDAOImp.findAll().orElse(Collections.emptyList());
-
-            if (demands.isEmpty()) {
-                throw new Exception("No Demands Found!");
-            } else {
-                return demands;
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return demandDAOImp.findAll().orElse(Collections.emptyList());
     }
 
-    public  Simulation findByCode(String number) {
+    public  Simulation findByNumber(String number) {
 
-        try {
-
-            Optional<Simulation> demandOptional= demandDAOImp.findByNumber(number);
-
-            if (demandOptional.isPresent()) {
-                return demandOptional.get();
-            } else {
-                throw new Exception("No Demand With This Number Found!");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return demandDAOImp.findByNumber(number).orElse(null);
     }
 
-    public  boolean update(demandStatus status, String number) {
-
-        try {
-            if(demandDAOImp.updateStatus(status, number)) {
-                return true;
-            } else {
-                throw new Exception("Error When Trying To Update Status!");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public  boolean updateStatus(demandStatus status, String number) {
+        return demandDAOImp.updateStatus(status, number);
     }
 
 }

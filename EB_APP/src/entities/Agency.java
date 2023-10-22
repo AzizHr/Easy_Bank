@@ -12,7 +12,7 @@ public class Agency {
 
     private String code;
     private String name;
-    private String adress;
+    private String address;
     private String phoneNumber;
     private ArrayList<Account> accounts;
     private ArrayList<Employee> employees;
@@ -22,7 +22,7 @@ public class Agency {
         return "Agency{" +
                 "code='" + code + '\'' +
                 ", name='" + name + '\'' +
-                ", adress='" + adress + '\'' +
+                ", adress='" + address + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", accounts=" + accounts +
                 ", employees=" + employees +
